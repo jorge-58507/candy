@@ -1,0 +1,46 @@
+.dtbl {
+  margin: 5px;
+  padding: 0;
+}
+.dtbl.dtbl_bordered>.dtbl_caption {
+  margin: 0;
+  color: #9e9e9e;
+}
+.dtbl.dtbl_bordered>.dtbl_head {
+  border: solid 1px #009688;
+  margin: 0;
+}
+.dtbl.dtbl_bordered>.dtbl_head>div {
+  text-align: center;
+  font-weight: bold;
+  padding: 7px;
+  border: solid 1px #009688;
+}
+.dtbl.dtbl_bordered>.dtbl_head>div.teal {
+  color: #fff;
+}
+.dtbl.dtbl_bordered>.dtbl_footer {
+  border: solid 1px #009688;
+  margin: 0;
+}
+.dtbl.dtbl_bordered>.dtbl_footer>div {
+  text-align: center;
+  font-weight: bold;
+  padding: 7px;
+  border: solid 1px #009688;
+}
+.dtbl.dtbl_bordered>.dtbl_body {
+  border: solid 1px #009688;
+  margin: 0;
+}
+.dtbl.dtbl_bordered>.dtbl_body>div {
+  height: 42.5px;
+}
+.dtbl.dtbl_bordered>.dtbl_body>div>div.py_5 {
+  padding-top: 5px; padding-bottom: 5px;
+}
+
+
+#txt_date_date {
+  font-size: x-large;
+}

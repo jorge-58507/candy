@@ -1,0 +1,231 @@
+.content {
+  /* border:solid 1px #f0f0f0; */
+  margin-bottom: 50px;
+  /* height: 100vh; */
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ecfff9+0,f2fffa+51,ecfff9+100 */
+  background: #ecfff9; /* Old browsers */
+  background: -moz-linear-gradient(top, #ecfff9 0%, #f2fffa 51%, #ecfff9 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #ecfff9 0%,#f2fffa 51%,#ecfff9 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #ecfff9 0%,#f2fffa 51%,#ecfff9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ecfff9', endColorstr='#ecfff9',GradientType=0 ); /* IE6-9 */
+}
+.input_valid {
+  border-bottom: solid 1px #01a422 !important;
+}
+.input_invalid {
+  border-bottom: solid 1px red !important;
+}
+.navbar-fixed {
+  height: 45px;
+  bottom: 0px;
+  position: fixed;
+}
+.navbar-fixed nav{
+  line-height: 35px;
+  height: 45px;
+}
+.panel_button {
+  margin-left: -60px;
+  z-index: 1000;
+}
+.panel_button.active {
+  margin-left: -25px;
+}
+.sidenav {
+  width: 400px;
+  padding: 10px;
+}
+#div_border {
+  width: 0px;
+  height: 100vh;
+  background: #ccc;
+  margin-left: -1px;
+  position: absolute;
+}
+#btn_slide_panel>i {
+  font-size: 30pt;
+  text-align: right;
+  padding: 0 0 0 15px;
+}
+/* ########################     FLEXBOX CLASSES  ######################## */
+.flex{
+  display: flex;
+}
+.flex.flex-column{ /*  V-DIRECTION */
+  flex-direction: column;
+}
+.flex.flex-column-reverse{
+  flex-direction: column-reverse;
+}
+.flex.flex-row{ /*  H-DIRECTION */
+  flex-direction: row;
+}
+.flex.flex-row-reverse{
+  flex-direction: row-reverse;
+}
+.flex.flex-wrap{ /*  MULTI LINEA */
+  flex-wrap: wrap;
+}
+.flex.flex-wrap-reverse{
+  flex-direction: wrap-reverse;
+}
+.flex.justify-center{ /* H-CENTER */
+  justify-content: center;
+}
+.flex.justify-start{
+  justify-content: flex-start;
+}
+.flex.justify-end{
+  justify-content: flex-end;
+}
+.flex.justify-center div{ 
+  align-self: center;
+  margin: 0 !important;
+}
+.flex.align-center{ /* V-CENTER */
+  align-items: center;
+}
+.flex.align-end{
+  align-items: flex-end;
+}
+.flex.align-start{
+  align-items: flex-start;
+}
+/* ########################     BORDER CLASS     ######################## */
+.bx_0 { border-right: 0; border-left: 0;}
+.by_0 { border-bottom: 0; border-top: 0;}
+.bx_1 { border-right: solid 1px; border-left: solid 1px;}
+.by_1 { border-bottom: solid 1px; border-top: solid 1px;}
+.bt_0 { border-top: 0; }
+.bt_1 { border-top: solid 1px; }
+.br_0 { border-top: 0; }
+.br_1 { border-right: solid 1px; }
+.bb_0 { border-bottom: 0; }
+.bb_1 { border-bottom: solid 1px; }
+.bl_0 { border-left: 0; }
+.bl_1 { border-left: solid 1px; }
+/* ########################     BORDER FORMAT     ######################## */
+.bs_2 {  border: solid 2px;  }
+.bs_1 {  border: solid 1px;  }
+.radius_5 {  border-radius: 5px;  }
+.radius_10 {  border-radius: 10px;  }
+.border_teal {  border-color: #4db6ac;  }
+.border_gray {  border-color: #e0e0e0; }
+.border_black {  border-color: #000000; }
+
+/* ########################     PADDING CLASS     ######################## */
+.px_0 { padding-left: 0; padding-right: 0; }
+.px_5 { padding-left: 5px; padding-right: 5px; }
+.px_10 { padding-left: 10px !important; padding-right: 10px !important; }
+.px_15 { padding-left: 15px !important; padding-right: 15px !important; }
+.py_0 { padding-top: 0; padding-bottom: 0; }
+.py_5 { padding-top: 5px !important; padding-bottom: 5px !important; }
+.py_10 { padding-top: 10px; padding-bottom: 10px; }
+.py_15 { padding-top: 15px; padding-bottom: 15px; }
+.pt_0 { padding-top: 0; }
+.pt_5 { padding-top: 5px !important; }
+.pt_10 { padding-top: 10px !important; }
+.pt_15 { padding-top: 15px !important; }
+.pt_25 { padding-top: 25px !important; }
+.pr_0 { padding-right: 0; }
+.pr_5 { padding-right: 5px; }
+.pr_10 { padding-right: 10px; }
+.pb_0 { padding-bottom: 0 !important; }
+.pb_5 { padding-bottom: 5px !important; }
+.pb_10 { padding-bottom: 10px !important; }
+.pb_20 { padding-bottom: 20px !important; }
+.pl_0 { padding-left: 0 !important; }
+.pl_5 { padding-left: 5px !important; }
+.pl_10 { padding-left: 10px !important; }
+
+.m_0 { margin: 0; }
+.m_5 { margin: 5px; }
+.m_10 { margin:10px; }
+
+.my_0 { margin: 0 !important; }
+.my_5 { margin: 5px !important; }
+.my_10 { margin:10px !important; }
+
+.mt_5 { margin-top: 5px; }
+.mt_10 { margin-top: 10px; }
+.mt_15 { margin-top: 15px; }
+
+.mb_0 { margin-bottom: 0px !important; }
+.mb_5 { margin-bottom: 5px !important; }
+.mb_10 { margin-bottom: 10px; }
+.mb_15 { margin-bottom: 15px; }
+.mb_15 { margin-bottom: 20px; }
+
+/* ########################     FONT CLASS     ######################## */
+.fs_20 {  font-size: 20px;  }
+.fs_30 {  font-size: 30px;  }
+.fs_40 {  font-size: 40px;  }
+.fs_50 {  font-size: 50px;  }
+.fs_60 {  font-size: 60px;  }
+
+/* ########################     FLEX WIDTH CLASS     ######################## */
+.w_100 { width: 100px; }
+.w_200 { width: 200px; }
+.w_300 { width: 300px; }
+.w_400 { width: 400px; }
+.w_500 { width: 500px; }
+/* ########################     FLEX HEIGHT CLASS     ######################## */
+.h_10 { height: 10px; }
+.h_20 { height: 20px; }
+.h_30 { height: 30px; }
+.h_50 { height: 50px; }
+.h_90 { height: 90px; }
+.h_100 { height: 100px; }
+.h_140 { height: 140px; }
+.h_150 { height: 150px; }
+.h_200 { height: 200px; }
+.h_300 { height: 300px; }
+.h_400 { height: 400px; }
+.h_500 { height: 500px; }
+.mhp_100 { height: 100%; }
+/* ########################     HEIGHT 100% VIEWPORT CLASS     ######################## */
+.height_100 {  height: 100vh;  }
+/* ########################     TOGGLE CLASS     ######################## */
+.toggle_on {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s, height 0.5s, opacity 0.6s ease-in;
+}
+.toggle_off {
+  height: 0px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, height 0.5s, opacity 0.1s ease-out;
+}
+
+.font_bolder {
+  font-weight: bolder;
+}
+.v_scrollable {
+  overflow-y: auto;
+}
+.h_scrollable {
+  overflow-h: auto;
+}
+.text_center{
+  text-align: center;
+}
+.text_left{
+  text-align: left;
+}
+.text_right{
+  text-align: right;
+}
+.cursor_pointer{
+  cursor: pointer;
+}
+#span_medic_logged {
+  margin: 0 0 0 30px;
+  font-size: 16px;
+}
+.nav-wrapper{
+  padding-left: 50px;
+}
+.brand-logo{
+  position: inherit !important;
+}

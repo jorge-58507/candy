@@ -1,0 +1,27 @@
+.list{
+  background-color: #fff;
+  overflow-y: auto;
+  border: solid 1px #e0e0e0;
+}
+.list .item {
+   border-bottom: solid 1px;
+   border-color: #e0e0e0;
+   height: 40px;
+   cursor: pointer;
+}
+.list .item:hover {
+   background-color: #e0e0e0;
+}
+.list .item.compact {
+   height: 30px;
+}
+.list .item.item_large {
+   height: 60px;
+}
+.list .row.item {
+   padding: 0 5px;
+}
+.header_list {
+  color: #fff;
+  font-weight: bolder;
+}

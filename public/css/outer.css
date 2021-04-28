@@ -1,0 +1,9 @@
+.height_100 {
+  height: 100vh;
+}
+#container_auth{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0px 0px 4px 0px rgba(186,184,186,1);
+  -moz-box-shadow: inset 0px 0px 4px 0px rgba(186,184,186,1);
+  box-shadow: inset 0px 0px 4px 0px rgba(186,184,186,1);
+}

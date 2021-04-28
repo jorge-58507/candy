@@ -1,0 +1,67 @@
+@font-face {
+  font-family: 'sanson';
+  src: url("../font/sanson.otf");
+}
+.sanson_title {
+  font-family: 'sanson';
+  font-stretch: expanded;
+}
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #4db6ac;
+  box-shadow: 0 1px 0 0 #fff;
+}
+.history_filter {
+  border-left: solid 1px;
+  border-top: solid 1px;
+  border-right: solid 1px;
+  border-color: #e0e0e0;
+  background-color: #fff;
+  padding: 0 5px !important;
+}
+.history_filter>input {
+  height: 30px !important;
+}
+.list{
+  background-color: #fff;
+  overflow-y: auto;
+  border: solid 1px #e0e0e0;
+}
+.list .item {
+   border-bottom: solid 1px;
+   border-color: #e0e0e0;
+   height: 40px;
+   cursor: pointer;
+}
+.list .item:hover {
+   background-color: #e0e0e0;
+}
+.list .item.compact {
+   border-bottom: solid 1px;
+   border-color: #e0e0e0;
+   height: 30px;
+}
+.history_container {
+  padding-top: 32px !important;
+}
+.history_container>textarea {
+  height: 140px;
+}
+.laboratory_container {
+  padding-top: 25px !important;
+}
+.laboratory_container>textarea {
+  height: 160px;
+}
+.document_container {
+  padding-top: 25px !important;
+}
+.document_container>textarea {
+  height: 160px;
+}
+.recipe_container>textarea {
+  height: 160px;
+}
+.card_laboratory {
+  height: 300px;
+  padding: 10px;
+}
