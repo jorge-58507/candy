@@ -47,6 +47,8 @@ Route::post('/save_sidenav_patient', 'patientController@store');
 // Route::post('/drug_frecuency','drugController@save_frecuency');
 Route::post('/logmedic','medicController@log');
 
+// Route::put('/date/{abc}','dateController@update');
+
 // Route::delete('/drug_dose/delete', 'drugController@delete_dose');
 // Route::delete('/drug_frecuency/delete', 'drugController@delete_frecuency');
 
