@@ -103,17 +103,48 @@ class historyController extends Controller
       $rs_history_by_patient = $this->get_history_by_patient($rs_dateopened[0]['date_ai_patient_id'],$medic_id);
     //   $rs_history_by_patient = ($qry_history_by_patient->count()>0)? $qry_history_by_patient->get() : [];
       
+    // VERIFICAR ALARMAS EN LOS LABORATORIOS
       $raw_lab = array();
       foreach ($rs_history_by_patient as $key => $obj_record) {
-        $history_decode = json_decode($obj_record['tx_history_value'], true);
-        $laboratory =  $history_decode[$obj_record['history_ai_date_id']]['laboratory'];
+        // $history_decode = json_decode($obj_record['tx_history_value'], true);
+        // $laboratory =  $history_decode[$obj_record['history_ai_date_id']]['laboratory'];
+        // $laboratory = $obj_record[''];
         $alarm = 0; $empty = 1;
-        foreach ($laboratory as $index => $fe_laboratory) {
-            if ($fe_laboratory[1] == true) { $alarm = 1;  }
-            if (!empty($fe_laboratory[0])) { $empty = 0;  }
-        }
+        // foreach ($laboratory as $index => $fe_laboratory) {
+        //     if ($fe_laboratory[1] == true) { $alarm = 1;  }
+        //     if (!empty($fe_laboratory[0])) { $empty = 0;  }
+        // }
+        $hemoglobin = json_decode($obj_record['tx_lab_hemoglobin'], true);
+        if (!empty($hemoglobin[0])) { $empty = 0;  }; //Hay contenido
+        if ($hemoglobin[1] == true) { $alarm = 1;  }; //Hay alarma
+
+        $hematocrit = json_decode($obj_record['tx_lab_hematocrit'], true);
+        if (!empty($hematocrit[0])) { $empty = 0;  }; //Hay contenido
+        if ($hematocrit[1] == true) { $alarm = 1;  }; //Hay alarma
+
+        $platelet = json_decode($obj_record['tx_lab_platelet'], true);
+        if (!empty($platelet[0])) { $empty = 0;  }; //Hay contenido
+        if ($platelet[1] == true) { $alarm = 1;  }; //Hay alarma
+
+        $redbloodcell = json_decode($obj_record['tx_lab_redbloodcell'], true);
+        if (!empty($redbloodcell[0])) { $empty = 0;  }; //Hay contenido
+        if ($redbloodcell[1] == true) { $alarm = 1;  }; //Hay alarma
+
+        $urea = json_decode($obj_record['tx_lab_urea'], true);
+        if (!empty($urea[0])) { $empty = 0;  }; //Hay contenido
+        if ($urea[1] == true) { $alarm = 1;  }; //Hay alarma
+
+        $hemoglobin = json_decode($obj_record['tx_lab_hemoglobin'], true);
+        if (!empty($hemoglobin[0])) { $empty = 0;  }; //Hay contenido
+        if ($hemoglobin[1] == true) { $alarm = 1;  }; //Hay alarma
+
+        $hemoglobin = json_decode($obj_record['tx_lab_hemoglobin'], true);
+        if (!empty($hemoglobin[0])) { $empty = 0;  }; //Hay contenido
+        if ($hemoglobin[1] == true) { $alarm = 1;  }; //Hay alarma
+
+        
         if ($empty === 0) {
-            $raw_lab[$key]['date'] = $obj_record['tx_history_date'];
+            $raw_lab[$key]['date'] = $obj_record['tx_history_date']; //Fecha de la cita
             $raw_lab[$key]['content'] = $this->generate_laboratory_content($laboratory);
             $raw_lab[$key]['alarm'] = $alarm;
         }
@@ -253,14 +284,13 @@ class historyController extends Controller
 	public function get_history_by_dateslug ($date_slug) {
 		$candy_history = new candy_history;
 		$rs_history = $candy_history
-		->select('candy_histories.ai_history_id','candy_histories.tx_history_value','candy_histories.tx_history_date','candy_histories.tx_history_document')
 		->join('candy_dates','candy_dates.ai_date_id','=','candy_histories.history_ai_date_id')
 		->where('candy_dates.tx_date_slug','=',$date_slug)->get();
 		return $rs_history;
 	}
 	public function get_history_by_patient ($patient_id,$medic_id) {
 		$candy_history = new candy_history;
-		$rs_history_by_patient = $candy_history->select('candy_histories.ai_history_id', 'candy_histories.tx_history_date', 'candy_histories.tx_history_value','candy_histories.history_ai_date_id')
+		$rs_history_by_patient = $candy_history
 			->join('candy_dates','candy_dates.ai_date_id','=','candy_histories.history_ai_date_id')
 			->where('candy_dates.date_ai_patient_id',$patient_id)
 			->where('candy_dates.date_ai_medic_id',$medic_id)->get();
@@ -283,7 +313,7 @@ class historyController extends Controller
 		$rs_history_by_patient = $this->get_history_by_patient($rs_dateopened[0]['date_ai_patient_id'],$medic_id);
 		$raw_lab = array();
 		foreach ($rs_history_by_patient as $key => $obj_record) {
-			$history_decode = json_decode($obj_record['tx_history_value'], true);
+			// $history_decode = json_decode($obj_record['tx_history_value'], true); *********ARREGLAR ESTO
 			$laboratory =  $history_decode[$obj_record['history_ai_date_id']]['laboratory'];
 			$alarm = 0; $empty = 1;
 			foreach ($laboratory as $index => $fe_laboratory) {

@@ -70,7 +70,7 @@ class class_reason {
   }
   render_list (target, obj) {
     var body_list = '';
-    for (var a in obj) {  body_list += `<div id="${a}" class="item compact" onclick="pick_list('reason',this.id,this.innerHTML)">${obj[a]}</div>`;  }
+    for (var a in obj) {  body_list += `<div id="${a}" class="item compact truncate" onclick="pick_list('reason',this.id,this.innerHTML)">${obj[a]}</div>`;  }
     document.getElementById(target).innerHTML = body_list;
   }
   reorder_list (obj) {
@@ -114,7 +114,7 @@ class class_current {
   }
   render_list (target, obj) {
     var body_list = '';
-    for (var a in obj) { body_list += `<div id="${obj[a]}" title="${obj[a]}" class="item compact" onclick="pick_list('current',this.id,this.innerHTML)">${a}</div>`;  }
+    for (var a in obj) { body_list += `<div id="${obj[a]}" title="${obj[a]}" class="item compact truncate" onclick="pick_list('current',this.id,this.innerHTML)">${a}</div>`;  }
     document.getElementById(target).innerHTML = body_list;
   }
   reorder_list (obj) {
@@ -158,7 +158,7 @@ class class_antecedent {
   }
   render_list (target, obj) {
     var body_list = '';
-    for (var a in obj) {  body_list += `<div id="${a}" class="item compact" onclick="pick_list('antecedent',this.id,this.innerHTML)">${obj[a]}</div>`;  }
+    for (var a in obj) {  body_list += `<div id="${a}" class="item compact truncate" onclick="pick_list('antecedent',this.id,this.innerHTML)">${obj[a]}</div>`;  }
     document.getElementById(target).innerHTML = body_list;
   }
   reorder_list (obj) {
@@ -202,7 +202,7 @@ class class_examination {
   }
   render_list (target, obj) {
     var body_list = '';
-    for (var a in obj) {  body_list += `<div id="${a}" class="item compact" onclick="pick_list('examination',this.id,this.innerHTML)">${obj[a]}</div>`;  }
+    for (var a in obj) {  body_list += `<div id="${a}" class="item compact truncate" onclick="pick_list('examination',this.id,this.innerHTML)">${obj[a]}</div>`;  }
     document.getElementById(target).innerHTML = body_list;
   }
   reorder_list (obj) {
@@ -219,6 +219,54 @@ class class_examination {
     var new_value = content;
     document.getElementById('txt_history_examination').value = new_value;
   }
+  set_state_vital (field,content) {
+    if (content != '') {
+      document.getElementById("txt_ef_"+field).value = cls_general.val_dec(content,1,0,1);
+      document.getElementById("txt_pe_"+field).value = cls_general.val_dec(content,1,0,1);
+    }else{
+      document.getElementById("txt_ef_"+field).value = content;
+      document.getElementById("txt_pe_"+field).value = content;
+    }
+    M.updateTextFields();
+  }
+  blur_examination_textarea(field, name){
+    console.log('run');
+    var text = field.value;
+    var splited = text.split(',');
+    var unsorted_splited=[];
+    for (const a in splited) {
+      unsorted_splited.push((splited[a].trim()).toLowerCase())
+    }
+    for (let i = 0; i < splited.length; i++) {
+      var indices = [];
+      var idx = unsorted_splited.indexOf(unsorted_splited[i].trim());
+      while (idx != -1) {
+        indices.push(idx);
+        idx = unsorted_splited.indexOf(unsorted_splited[i], idx + 1);
+      }
+      if (indices.length > 1) {
+        M.toast({html: 'Verifique el campo '+name+', hay elementos repetidos.'});
+        return false;
+      }
+    }
+  }
+  ef_filter_list (target,str) {
+    var haystack = raw_eflist[target];
+    var needles = str.split(' ');
+    var raw_filtered = new Object;
+    for (var i in haystack) {
+      var ocurrencys = 0;
+      for (const a in needles) {
+        if (haystack[i]['tx_' + target + '_value'].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
+      }
+      if (ocurrencys === needles.length) {
+        raw_filtered[i] = haystack[i]['tx_' + target + '_value'];
+      }
+    }
+    ef_render_list (target, ef_reorder_list(raw_filtered));
+  }
+  
+
 }
 class class_diagnostic {
   constructor(json_selected){
@@ -245,7 +293,7 @@ class class_diagnostic {
   }
   render_list (target, obj) {
     var body_list = '';
-    for (var a in obj) {  body_list += `<div id="${a}" class="item compact" onclick="pick_list('diagnostic',this.id,this.innerHTML)">${obj[a]}</div>`;  }
+    for (var a in obj) {  body_list += `<div id="${a}" class="item compact truncate" onclick="pick_list('diagnostic',this.id,this.innerHTML)">${obj[a]}</div>`;  }
     document.getElementById(target).innerHTML = body_list;
   }
   reorder_list (obj) {
@@ -288,7 +336,7 @@ class class_plan {
   }
   render_list (target, obj) {
     var body_list = '';
-    for (var a in obj) {  body_list += `<div id="${obj[a]}" class="item compact" onclick="pick_list('plan',this.id,this.innerHTML)">${a}</div>`;  }
+    for (var a in obj) {  body_list += `<div id="${obj[a]}" class="item compact truncate" onclick="pick_list('plan',this.id,this.innerHTML)">${a}</div>`;  }
     document.getElementById(target).innerHTML = body_list;
   }
   reorder_list (obj) {
@@ -316,24 +364,9 @@ class class_plan {
 
 
 // ######################    function to ef
-function ef_filter_list (target,str) {
-  var haystack = raw_eflist[target];
-  var needles = str.split(' ');
-  var raw_filtered = new Object;
-  for (var i in haystack) {
-    var ocurrencys = 0;
-    for (const a in needles) {
-      if (haystack[i]['tx_' + target + '_value'].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
-    }
-    if (ocurrencys === needles.length) {
-      raw_filtered[i] = haystack[i]['tx_' + target + '_value'];
-    }
-  }
-  ef_render_list (target, ef_reorder_list(raw_filtered));
-}
 function ef_render_list (target, obj) {
   var body_list = '';
-  for (var a in obj) {  body_list += `<div class="item compact" title="${obj[a]}" onclick="ef_pick_list('${target}',this.innerHTML)">${obj[a]}</div>`;  }
+  for (var a in obj) {  body_list += `<div class="item compact truncate" title="${obj[a]}" onclick="ef_pick_list('${target}',this.innerHTML)">${obj[a]}</div>`;  }
   document.getElementById('ef_'+target+'_list').innerHTML = body_list;
 }
 function ef_reorder_list (obj) {
@@ -352,7 +385,7 @@ function ef_pick_list (target,content) {
   var expresion = new RegExp(content);
   if (!expresion.test(old_value)) {
     var new_value = '';
-    new_value += ((document.getElementById('txt_ef_'+target).value).length < 1) ? uc_first(content) : `, ${content}`;
+    new_value += ((document.getElementById('txt_ef_'+target).value).length < 1) ? cls_general.uc_first(content) : `, ${content}`;
     document.getElementById('txt_ef_'+target).value += new_value;
   }else{
     M.toast({html: '¡Ya Existe!'});
@@ -1091,22 +1124,12 @@ class class_document {
       M.toast({ html: history_obj['message'] });
     }
     laravel_request(url, method, funcion, body);
-  }
+  }  
 }
 
 
 
 
-function set_state_vital (field,content) {
-  if (content != '') {
-    document.getElementById("txt_ef_"+field).value = val_dec(content,1,0,1);
-    document.getElementById("txt_pe_"+field).value = val_dec(content,1,0,1);
-  }else{
-    document.getElementById("txt_ef_"+field).value = content;
-    document.getElementById("txt_pe_"+field).value = content;
-  }
-  M.updateTextFields();
-}
 function generate_laboratory_reveal (div) {
   div.innerHTML = 'probando';
 }

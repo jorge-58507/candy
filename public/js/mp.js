@@ -286,7 +286,41 @@ class general_funct {
   } else {
     elem.classList.remove('toggle_off');
     elem.classList.add('toggle_on');
-  }
+  }  
+}
+uc_first(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+val_dec(str,decimal,refill,split){
+  var ans = isNaN(str)
+  str = (ans) ? 0 : str;
+	if (str === '') { return false;	}
+	str = parseFloat(str);
+	var pat = new RegExp('(^[-][0-9]{1}|^[0-9]+|[0-9]+)([.][0-9]{1,'+decimal+'})?$');
+  if(!pat.test(str)) { return false; }
+	var str_splited = (str.toString()).split('.');
+	var decimal_part = '';
+	for (var i = 0; i < decimal; i++) { 	decimal_part+='0';	}
+	if(str_splited.length > '1') {
+		if(str_splited.length > '2') {
+			str_splited.splice(2);
+		}
+		if (str_splited[0].length === 0) {
+			str_splited[0]='0';
+		}
+		if (refill === 1) {
+			str_splited[1]+=decimal_part;  // REFILL
+		}
+		if (split === 1) {
+			str_splited[1] = str_splited[1].substr(0, decimal)  // SPLIT
+		}
+		str = str_splited[0] + '.' + str_splited[1];
+  } else {
+		if (refill === 1) {
+			str = str_splited[0] + '.'+decimal_part;;  // REFILL
+		}
+	}
+	return str;
 }
 
 }

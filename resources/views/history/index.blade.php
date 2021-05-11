@@ -640,63 +640,67 @@
 @endsection
 @section('javascript')
   <script src="{{ asset('js/jquery.js') }}"></script>
-  {{-- <!-- <script src="{{ asset('js/jquery-ui.min.js') }}"></script>  --> --}}
   <script src="{{ asset('js/validCampoFranz.js') }}" defer></script>
   <script src="{{ asset('js/history.js') }}" ></script>
-<script type="text/javascript">
 
-  document.addEventListener('DOMContentLoaded', function() {
-
-    // MATERIALIZE INSTANCES
-    var el_tab = document.querySelectorAll('.tabs');
-    var instance_tab = M.Tabs.init(el_tab);
-    var el_select = document.querySelectorAll('select');
-    var instance_select = M.FormSelect.init(el_select);
-    var el_modal = document.querySelectorAll('.modal');
-    var instance_modal = M.Modal.init(el_modal);
-    var el_carousel = document.querySelectorAll('.carousel');
-    var instance_carousel = M.Carousel.init(el_carousel);
-    var el_dropdown = document.querySelectorAll('.dropdown-trigger');
-    var instance_dropdown = M.Dropdown.init(el_dropdown);
-    var el_datepicker = document.querySelectorAll('.datepicker');
-    var instances_datepicker = M.Datepicker.init(el_datepicker,{"autoClose":true,"format":'dd-mm-yyyy',"container":"body"});
-    var el_timepicker = document.querySelectorAll('.timepicker');
-    var instances_timepicker = M.Timepicker.init(el_timepicker,{"autoClose":true});
-
-    // MATERIALIZE INSTANCES
-    cls_document.filter_treatment('');
-  });
-  var raw_reasonlist = JSON.parse('<?php echo json_encode($raw_reasonlist); ?>');
-  const cls_reason = new class_reason ('<?php echo json_encode($history['history']['reason']['selected']); ?>');
-  var raw_currentlist = JSON.parse('<?php echo json_encode($raw_currentlist); ?>');
-  const cls_current = new class_current;
-  var raw_antecedentlist = JSON.parse('<?php echo json_encode($raw_antecedentlist); ?>');
-  const cls_antecedent = new class_antecedent('<?php echo json_encode($history['history']['antecedent']['selected']); ?>');
-  var raw_examinationlist = JSON.parse('<?php echo json_encode($raw_examinationlist); ?>','<?php echo json_encode($raw_examinationlist); ?>');
-  const cls_examination = new class_examination;
-  var raw_diagnosticlist = JSON.parse('<?php echo json_encode($raw_diagnosticlist); ?>');
-  const cls_diagnostic = new class_diagnostic('<?php echo json_encode($history['history']['diagnostic']['selected']); ?>');
-  var raw_planlist = JSON.parse('<?php echo json_encode($raw_planlist); ?>');
-  const cls_plan = new class_plan;
-
-  var raw_laboratorylist = JSON.parse('<?php echo json_encode($raw_order['laboratory']); ?>');
-  var raw_eflist = JSON.parse('<?php echo json_encode($raw_efdatabase); ?>');
   
-  const cls_order = new class_order;
-  const cls_medical_history = new class_medical_history('<?php echo $raw_history['dateopened']['ai_date_id']; ?>');
-  const cls_laboratory = new class_laboratory;
+  <script type="text/javascript">
+    const cls_general = new general_funct();
 
-  const cls_document = new class_document(<?php echo $raw_history['dateopened']['ai_date_id']; ?>,'<?php echo json_encode($document['prescription']['drug_selected']); ?>');
-  var raw_complementarylist = JSON.parse('<?php echo json_encode($raw_order['complementary']); ?>');
-  var raw_profilelist = JSON.parse('<?php echo json_encode($raw_order['profile']); ?>');
-  var raw_druglist = JSON.parse('<?php echo json_encode($raw_druglist); ?>');
-  var raw_treatmentlist = JSON.parse('<?php echo json_encode($raw_treatmentlist); ?>')
-  
-  document.getElementById('paste_pe')
-      .addEventListener('click', function (e) {
-        cls_medical_history.paste_pe();
-        e.preventDefault();
-  });
+
+    
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // MATERIALIZE INSTANCES
+      var el_tab = document.querySelectorAll('.tabs');
+      var instance_tab = M.Tabs.init(el_tab);
+      var el_select = document.querySelectorAll('select');
+      var instance_select = M.FormSelect.init(el_select);
+      var el_modal = document.querySelectorAll('.modal');
+      var instance_modal = M.Modal.init(el_modal);
+      var el_carousel = document.querySelectorAll('.carousel');
+      var instance_carousel = M.Carousel.init(el_carousel);
+      var el_dropdown = document.querySelectorAll('.dropdown-trigger');
+      var instance_dropdown = M.Dropdown.init(el_dropdown);
+      var el_datepicker = document.querySelectorAll('.datepicker');
+      var instances_datepicker = M.Datepicker.init(el_datepicker,{"autoClose":true,"format":'dd-mm-yyyy',"container":"body"});
+      var el_timepicker = document.querySelectorAll('.timepicker');
+      var instances_timepicker = M.Timepicker.init(el_timepicker,{"autoClose":true});
+
+      // MATERIALIZE INSTANCES
+      cls_document.filter_treatment('');
+    });
+    var raw_reasonlist = JSON.parse('<?php echo json_encode($raw_reasonlist); ?>');
+    const cls_reason = new class_reason ('<?php echo json_encode($history['history']['reason']['selected']); ?>');
+    var raw_currentlist = JSON.parse('<?php echo json_encode($raw_currentlist); ?>');
+    const cls_current = new class_current;
+    var raw_antecedentlist = JSON.parse('<?php echo json_encode($raw_antecedentlist); ?>');
+    const cls_antecedent = new class_antecedent('<?php echo json_encode($history['history']['antecedent']['selected']); ?>');
+    var raw_examinationlist = JSON.parse('<?php echo json_encode($raw_examinationlist); ?>','<?php echo json_encode($raw_examinationlist); ?>');
+    const cls_examination = new class_examination;
+    var raw_diagnosticlist = JSON.parse('<?php echo json_encode($raw_diagnosticlist); ?>');
+    const cls_diagnostic = new class_diagnostic('<?php echo json_encode($history['history']['diagnostic']['selected']); ?>');
+    var raw_planlist = JSON.parse('<?php echo json_encode($raw_planlist); ?>');
+    const cls_plan = new class_plan;
+
+    var raw_laboratorylist = JSON.parse('<?php echo json_encode($raw_order['laboratory']); ?>');
+    var raw_eflist = JSON.parse('<?php echo json_encode($raw_efdatabase); ?>');
+    
+    const cls_order = new class_order;
+    const cls_medical_history = new class_medical_history('<?php echo $raw_history['dateopened']['ai_date_id']; ?>');
+    const cls_laboratory = new class_laboratory;
+
+    const cls_document = new class_document(<?php echo $raw_history['dateopened']['ai_date_id']; ?>,'<?php echo json_encode($document['prescription']['drug_selected']); ?>');
+    var raw_complementarylist = JSON.parse('<?php echo json_encode($raw_order['complementary']); ?>');
+    var raw_profilelist = JSON.parse('<?php echo json_encode($raw_order['profile']); ?>');
+    var raw_druglist = JSON.parse('<?php echo json_encode($raw_druglist); ?>');
+    var raw_treatmentlist = JSON.parse('<?php echo json_encode($raw_treatmentlist); ?>')
+    
+    document.getElementById('paste_pe')
+        .addEventListener('click', function (e) {
+          cls_medical_history.paste_pe();
+          e.preventDefault();
+    });
   // HISTORIA
   document.getElementById('btn_save_history')
   .addEventListener('click', function (e) {
