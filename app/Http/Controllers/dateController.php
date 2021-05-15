@@ -138,36 +138,44 @@ class dateController extends Controller
       $r_history = new historyController;
       $candy_date = new candy_date;
       $candy_reason = new candy_reason;
+      $candy_history = new candy_history;
 
       $qry_date = $candy_date->where('tx_date_slug','=',$date_slug);
       $rs_date = $qry_date->get();
       if ($qry_date->count() > 0 && $rs_date[0]['tx_date_status'] === 1) {
+        // ACTUALIZAR CITA, DESACTIVARLA
         $candy_date->where('tx_date_slug','=',$date_slug)->update(['tx_date_status' => 0]);
         $_SESSION['opendate_session'] = $date_slug;
+
         //CONSULTAR EL CONTENIDO DE MOTIVO DE CONSULTA
         $qry_reason = $candy_reason->where('ai_reason_id',$rs_date[0]['date_ai_reason_id']);
         $rs_reason = $qry_reason->get();
+
         // CONSULTAR ANTECEDENTES ANTERIORES
         $qry_lastdate = $candy_date->where('date_ai_patient_id',$rs_date[0]['date_ai_patient_id'])->where('tx_date_status',0)->orderBy('ai_date_id','desc')->take(2);
+        
         if ($qry_lastdate->count() > 1) {
           $rs_lastdate = $qry_lastdate->get();
           $lastdate_id = $rs_lastdate[1]['ai_date_id'];
-          $rs_history = $r_history->get_history_by_date($lastdate_id); 
+          $rs_history = $candy_history->where('history_ai_date_id', $lastdate_id)->first();
           $raw_antecedent = json_decode($rs_history['tx_history_antecedent'], true);
-          // $array_history = json_decode($rs_history['tx_history_value'],true);
-          // $raw_antecedent = $array_history[$lastdate_id]['history']['antecedent'];
         }else{
           $raw_antecedent = ["selected" => [], "content" => ''];
         }
+
+// ***********************  PORQUE NO CORRE LOS ANTECEDENTES
+
         // crear json history
         $user = $request->user();
         $user_id = $user['id'];
 
-        $json_history = '{"'.$rs_date[0]['ai_date_id'].'":{"physical_exam":{"skin":null,"head":null,"orl":null,"neck":null,"respiratory":null,"cardiac":null,"auscultation":null,"inspection":null,"palpation":null,"hip":null,"condition":"0","breathing":"0","hydration":"0","fever":"0","pupils":"0"},"history":{"reason":{"selected":['.$rs_date[0]['date_ai_reason_id'].'],"content":"Dolor de Espalda"},"current":{"content":null},"antecedent":{"selected":'.json_encode($raw_antecedent['selected']).',"content":"'.$raw_antecedent['content'].'"},"examination":{"content":null},"diagnostic":{"selected":[],"content":null},"comment":{"content":null},"plan":{"content":null},"vital_sign":{"fc":null,"fr":null,"tas":null,"tad":null,"temp":null,"gc":null}},"laboratory":{"hemoglobin":[null,false],"hematocrit":[null,false],"platelet":[null,false],"redbloodcell":[null,false],"urea":[null,false],"creatinine":[null,false],"whitebloodcell":[null,false],"lymphocytes":[null,false],"neutrophils":[null,false],"monocytes":[null,false],"basophils":[null,false],"eosinophils":[null,false],"result":[null,false]}}}';
-        $raw_history = json_decode($json_history,true);
+        // $json_history = '{"'.$rs_date[0]['ai_date_id'].'":{"physical_exam":{"skin":null,"head":null,"orl":null,"neck":null,"respiratory":null,"cardiac":null,"auscultation":null,"inspection":null,"palpation":null,"hip":null,"condition":"0","breathing":"0","hydration":"0","fever":"0","pupils":"0"},"history":{"reason":{"selected":['.$rs_date[0]['date_ai_reason_id'].'],"content":"Dolor de Espalda"},"current":{"content":null},"antecedent":{"selected":'.json_encode($raw_antecedent['selected']).',"content":"'.$raw_antecedent['content'].'"},"examination":{"content":null},"diagnostic":{"selected":[],"content":null},"comment":{"content":null},"plan":{"content":null},"vital_sign":{"fc":null,"fr":null,"tas":null,"tad":null,"temp":null,"gc":null}},"laboratory":{"hemoglobin":[null,false],"hematocrit":[null,false],"platelet":[null,false],"redbloodcell":[null,false],"urea":[null,false],"creatinine":[null,false],"whitebloodcell":[null,false],"lymphocytes":[null,false],"neutrophils":[null,false],"monocytes":[null,false],"basophils":[null,false],"eosinophils":[null,false],"result":[null,false]}}}';
+        // $raw_history = json_decode($json_history,true);
 
-        $json_document = '{"'.$rs_date[0]['ai_date_id'].'":{"medicalorder":{"laboratory":null,"complementary":null},"prescription":{},incapacity":{}';
-        $raw_document = json_decode($json_document,true);
+        // $json_document = '{"'.$rs_date[0]['ai_date_id'].'":{"medicalorder":{"laboratory":null,"complementary":null},"prescription":{},incapacity":{}';
+        // $raw_document = json_decode($json_document,true);
+
+        // ************CREAR CAMPOS DE DOCUMENT, LABORATORYORDER, COMPLEMENTARYORDER, PRESCRIPTION, ¿RECIPE?
 
         $date_id = $rs_date[0]['ai_date_id'];
         $candy_history = new candy_history;
@@ -214,6 +222,7 @@ class dateController extends Controller
           $candy_history->tx_lab_basophils = '[null,false]';
           $candy_history->tx_lab_eosinophils = '[null,false]';
           $candy_history->tx_lab_result = '[null,false]';
+          $candy_history->tx_document_incapacity = '[]'; //array de 4 string
 
           $candy_history->tx_history_document = json_encode($raw_document);
           $candy_history->save();
@@ -276,9 +285,9 @@ class dateController extends Controller
     }
     public function get_dateopened(){
       $candy_date = new candy_date;
-      // if (empty($_SESSION['opendate_session'])) {
-      //   return redirect('/date/create');
-      // }
+      if (empty($_SESSION['opendate_session'])) {
+        return 'null';
+      }
       $dateopened = $_SESSION['opendate_session'];
       $qry_date = $candy_date
       ->JOIN('candy_reasons','ai_reason_id','=','date_ai_reason_id')

@@ -12,8 +12,10 @@ class orderController extends Controller
 		$medic_controller = new medicController;
 		$medic_id = $medic_controller->get_medic_id();
 		$rs_order = $candy_order->select('ai_order_id','tx_order_value')
-		->where('order_ai_medic_id','=',$medic_id)->where('tx_order_type','=',$order_type)
-		->orWhere('order_ai_medic_id',0)->where('tx_order_type','=',$order_type)
+		->where('order_ai_medic_id','=',$medic_id)
+		->where('tx_order_type','=',$order_type)
+		->orWhere('order_ai_medic_id',0)
+		->where('tx_order_type','=',$order_type)
 		->get();
 		$raw_order = array();
 		foreach ($rs_order as $key => $order) {

@@ -5,7 +5,7 @@
   <link type="text/css" rel="stylesheet" href="{{ asset('css/history.css') }}"/>
 @endsection
 @section('content')
-  @php
+  <?php
     $raw_reasonlist = array();
     foreach ($raw_history['reasonlist'] as $key => $rs_reason) {
       $raw_reasonlist[$rs_reason['ai_reason_id']] = $rs_reason['tx_reason_value'];
@@ -58,11 +58,13 @@
     }
     // echo json_encode($raw_order); return false;
 
-    $raw_decoded = json_decode($raw_history['json_history'], true); 
-    $rs_history = json_decode($raw_decoded['tx_history_value'],true);
-    $history = $rs_history[$raw_history['dateopened']['ai_date_id']];
-    $rs_document = json_decode($raw_decoded['tx_history_document'],true);
-    $document = $rs_document[$raw_history['dateopened']['ai_date_id']];
+    // $raw_decoded = json_decode($raw_history['json_history'], true); 
+    // $rs_history = json_decode($raw_decoded['tx_history_value'],true);
+    $history = json_decode($raw_history['json_history'],true);
+    $vitalsign = json_decode($history['tx_history_vitalsign'], true);
+    // $history = $rs_history[$raw_history['dateopened']['ai_date_id']];
+    // $rs_document = json_decode($raw_decoded['tx_history_document'],true);
+    // $document = $rs_document[$raw_history['dateopened']['ai_date_id']];
     
     $raw_druglist = array();
     foreach ($raw_history['druglist'] as $key => $rs_drug) {
@@ -75,7 +77,7 @@
       $raw_treatmentlist[$rs_treatment['ai_treatment_id']]['json'] = json_decode($rs_treatment['tx_treatment_json'], true);
       $raw_treatmentlist[$rs_treatment['ai_treatment_id']]['slug'] = $rs_treatment['tx_treatment_slug'];
     }
-  @endphp
+  ?>
   <div class="row content">
     <div class="col s12">
       <div class="row">
@@ -537,7 +539,8 @@
                 </div>
               </div>
               <div class="col s8  document_container">
-                <textarea id="txt_document_laboratory" class="bs_1 border_teal">{{ $document['medicalorder']['laboratory'] }}</textarea>
+                <textarea id="txt_document_laboratory" class="bs_1 border_teal">medicalorder_laboratory</textarea>
+                <!-- <textarea id="txt_document_laboratory" class="bs_1 border_teal">{{ $document['medicalorder']['laboratory'] }}</textarea> -->
               </div>
 {{-- profile --}}
             </div>
@@ -574,7 +577,8 @@
                 </div>
               </div>
               <div class="col s8  document_container">
-                <textarea id="txt_document_complementary" class="bs_1 border_teal">{{ $document['medicalorder']['complementary'] }}</textarea>
+                <textarea id="txt_document_complementary" class="bs_1 border_teal">complementario documento</textarea>
+                <!-- <textarea id="txt_document_complementary" class="bs_1 border_teal">{{ $document['medicalorder']['complementary'] }}</textarea> -->
               </div>            
 {{-- ESTUDIOS COMPLEMENTARIOS --}}
             </div>
@@ -690,7 +694,8 @@
     const cls_medical_history = new class_medical_history('<?php echo $raw_history['dateopened']['ai_date_id']; ?>');
     const cls_laboratory = new class_laboratory;
 
-    const cls_document = new class_document(<?php echo $raw_history['dateopened']['ai_date_id']; ?>,'<?php echo json_encode($document['prescription']['drug_selected']); ?>');
+    const cls_document = new class_document(<?php echo $raw_history['dateopened']['ai_date_id']; ?>,'null');
+    // const cls_document = new class_document(<?php echo $raw_history['dateopened']['ai_date_id']; ?>,'<?php echo json_encode($document['prescription']['drug_selected']); ?>');
     var raw_complementarylist = JSON.parse('<?php echo json_encode($raw_order['complementary']); ?>');
     var raw_profilelist = JSON.parse('<?php echo json_encode($raw_order['profile']); ?>');
     var raw_druglist = JSON.parse('<?php echo json_encode($raw_druglist); ?>');
