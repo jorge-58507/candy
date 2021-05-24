@@ -281,9 +281,18 @@ class historyController extends Controller
 		$candy_history = new candy_history;
 		$rs_history = $candy_history->where('history_ai_date_id','=',$date_id)->firstorfail();
     $reason_history = json_decode($rs_history['tx_history_reason'], true);
-    $history = {"'.$date_id.'":{"physical_exam":{"skin":$rs_history['tx_pe_skin'],"head":$rs_history['tx_pe_head'],"orl":$rs_history['tx_pe_orl'],"neck":$rs_history['tx_pe_neck'],"respiratory":$rs_history['tx_pe_respiratory'],"cardiac":$rs_history['tx_pe_cardiac'],"auscultation":$rs_history['tx_pe_auscultation'],"inspection":$rs_history['tx_pe_inspection'],"palpation":$rs_history['tx_pe_palpation'],"hip":$rs_history['tx_pe_hip'],"condition":$rs_history['tx_pe_condition'],"breathing":$rs_history['tx_pe_condition'],"hydration":$rs_history['tx_pe_hydration'],"fever":$rs_history['tx_pe_fever'],"pupils":$rs_history['tx_pe_pupils']},"history":{"reason":{"selected":
-      
-      ,"content":"Dolor de Espalda"},"current":{"content":null},"antecedent":{"selected":'.json_encode($raw_antecedent['selected']).',"content":"'.$raw_antecedent['content'].'"},"examination":{"content":null},"diagnostic":{"selected":[],"content":null},"comment":{"content":null},"plan":{"content":null},"vital_sign":{"fc":null,"fr":null,"tas":null,"tad":null,"temp":null,"gc":null}},"laboratory":{"hemoglobin":[null,false],"hematocrit":[null,false],"platelet":[null,false],"redbloodcell":[null,false],"urea":[null,false],"creatinine":[null,false],"whitebloodcell":[null,false],"lymphocytes":[null,false],"neutrophils":[null,false],"monocytes":[null,false],"basophils":[null,false],"eosinophils":[null,false],"result":[null,false]}}}
+    $ 
+    $history = {"'.$date_id.'":{"physical_exam":{"skin":$rs_history['tx_pe_skin'],"head":$rs_history['tx_pe_head'],"orl":$rs_history['tx_pe_orl'],"neck":$rs_history['tx_pe_neck'],"respiratory":$rs_history['tx_pe_respiratory'],"cardiac":$rs_history['tx_pe_cardiac'],"auscultation":$rs_history['tx_pe_auscultation'],"inspection":$rs_history['tx_pe_inspection'],"palpation":$rs_history['tx_pe_palpation'],"hip":$rs_history['tx_pe_hip'],"condition":$rs_history['tx_pe_condition'],"breathing":$rs_history['tx_pe_condition'],"hydration":$rs_history['tx_pe_hydration'],"fever":$rs_history['tx_pe_fever'],"pupils":$rs_history['tx_pe_pupils']},
+    "history":{"reason":{"selected":$reason_history['selected'],"content":$reason_history['content']},
+    "current":{"content":$rs_history['tx_history_current']},
+    "antecedent":{"selected":"$antecedent_history['selected']","content":"'.$raw_antecedent['content'].'"},
+    "examination":{"content":null},
+    "diagnostic":{"selected":[],"content":null},
+    "comment":{"content":null},
+    "plan":{"content":null},
+    "vital_sign":{"fc":null,"fr":null,"tas":null,"tad":null,"temp":null,"gc":null}},
+    
+    "laboratory":{"hemoglobin":[null,false],"hematocrit":[null,false],"platelet":[null,false],"redbloodcell":[null,false],"urea":[null,false],"creatinine":[null,false],"whitebloodcell":[null,false],"lymphocytes":[null,false],"neutrophils":[null,false],"monocytes":[null,false],"basophils":[null,false],"eosinophils":[null,false],"result":[null,false]}}}
 
 
 		return $rs_history;

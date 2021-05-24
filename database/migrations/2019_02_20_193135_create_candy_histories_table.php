@@ -19,8 +19,7 @@ class CreateCandyHistoriesTable extends Migration
             $table->integer('history_ai_date_id');
             $table->string('tx_history_date');
             // $table->longText('tx_history_value');
-            $table->longText('tx_history_document');
-            $table->longText('tx_history_value');
+            // $table->longText('tx_history_document');
             $table->longtext('tx_pe_skin');
             $table->longtext('tx_pe_head');
             $table->longtext('tx_pe_orl');
