@@ -179,13 +179,16 @@ class dateController extends Controller
 
         $date_id = $rs_date[0]['ai_date_id'];
         $candy_history = new candy_history;
+        $candy_reasonhistory = new candy_reasonhistory;
+        $candy_antecedenthistory = new candy_antecedenthistory;
+        $candy_diagnostichistory = new candy_diagnostichistory;
+
         $count_history = $candy_history->where('history_ai_date_id','=',$date_id)->count();
         if ($count_history < 1) {
           $today = date('Y-m-d');
           $candy_history->history_ai_user_id = $user_id;
           $candy_history->history_ai_date_id = $date_id;
           $candy_history->tx_history_date = $today;
-          // $candy_history->tx_history_value = json_encode($raw_history);
           $candy_history->tx_pe_skin = '';
           $candy_history->tx_pe_head = '';
           $candy_history->tx_pe_orl = '';
@@ -201,11 +204,11 @@ class dateController extends Controller
           $candy_history->tx_pe_hydration = '';
           $candy_history->tx_pe_fever = '';
           $candy_history->tx_pe_pupils = '';
-          $candy_history->tx_history_reason = '{"selected":['.$rs_date[0]['date_ai_reason_id'].'],"content":"'.$rs_reason[0]['tx_reason_value'].'"}';
+          // $candy_history->tx_history_reason = '{"selected":['.$rs_date[0]['date_ai_reason_id'].'],"content":"'.$rs_reason[0]['tx_reason_value'].'"}';
           $candy_history->tx_history_current = '';
-          $candy_history->tx_history_antecedent = '{"selected":'.json_encode($raw_antecedent['selected']).',"content":"'.$raw_antecedent['content'].'"}';
+          // $candy_history->tx_history_antecedent = '{"selected":'.json_encode($raw_antecedent['selected']).',"content":"'.$raw_antecedent['content'].'"}';
           $candy_history->tx_history_examination = '';
-          $candy_history->tx_history_diagnostic = '{"selected":null,"content":""}';
+          // $candy_history->tx_history_diagnostic = '{"selected":null,"content":""}';
           $candy_history->tx_history_comment = '';
           $candy_history->tx_history_plan = '';
           $candy_history->tx_history_vitalsign = '{"fc":null,"fr":null,"tas":null,"tad":null,"temp":null,"gc":null}';
@@ -223,10 +226,18 @@ class dateController extends Controller
           $candy_history->tx_lab_eosinophils = '[null,false]';
           $candy_history->tx_lab_result = '[null,false]';
           $candy_history->tx_document_incapacity = '[]'; //array de 4 string
-
-          $candy_history->tx_history_document = json_encode($raw_document);
           $candy_history->save();
+          $last_historyid = $candy_history->ai_history_id;
+
+          $candy_reasonhistory->reasonhistory_ai_history_id = $last_historyid;
+          $candy_reasonhistory->reasonhistory_ai_reason_id = $rs_date[0]['date_ai_reason_id'];
+          $candy_reasonhistory->tx_reasonhistory_value = $rs_date[0]['tx_reason_value'];
+          $candy_reasonhistory->save();
+
+
+          // INSERTAR EN ANTECEDENTE TABLA, LIGAR ANTECEDENTES A USUARIO. 
         }
+
         return response()->json(['response'=>'success','message'=> $lastdate_id]);
       }else{
         return response()->json(['response'=>'failed','message'=>'Esta cita ya fue atendida.']);

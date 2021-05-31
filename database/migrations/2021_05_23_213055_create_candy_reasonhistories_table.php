@@ -15,7 +15,9 @@ class CreateCandyReasonhistoriesTable extends Migration
     {
         Schema::create('candy_reasonhistories', function (Blueprint $table) {
             $table->bigIncrements('ai_reasonhistory_id');
+            $table->integer('reasonhistory_ai_history_id');
             $table->integer('reasonhistory_ai_reason_id');
+            $table->string('tx_reasonhistory_value');
             $table->timestamps();
         });
     }

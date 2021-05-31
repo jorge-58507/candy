@@ -35,11 +35,11 @@ class CreateCandyHistoriesTable extends Migration
             $table->longtext('tx_pe_hydration');
             $table->longtext('tx_pe_fever');
             $table->longtext('tx_pe_pupils');
-            $table->longtext('tx_history_reason');
+            // $table->longtext('tx_history_reason');
             $table->longtext('tx_history_current');
             $table->longtext('tx_history_antecedent');
             $table->longtext('tx_history_examination');
-            $table->longtext('tx_history_diagnostic');
+            // $table->longtext('tx_history_diagnostic');
             $table->longtext('tx_history_comment');
             $table->longtext('tx_history_plan');
             $table->longtext('tx_history_vitalsign');

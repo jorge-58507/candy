@@ -15,7 +15,9 @@ class CreateCandyDiagnosticthistoriesTable extends Migration
     {
         Schema::create('candy_diagnosticthistories', function (Blueprint $table) {
             $table->bigIncrements('ai_diagnostichistory_id');
+            $table->integer('diagnostichistory_ai_history_id');
             $table->integer('diagnostichistory_ai_diagnostic_id');
+            $table->string('tx_diagnostichistory_value');
             $table->timestamps();
         });
     }

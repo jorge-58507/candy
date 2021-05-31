@@ -277,22 +277,79 @@ class historyController extends Controller
 		}
 		return $diagnostic_selected;
 	}
+  public function get_reason_by_history($h_id){
+    $candy_reasonhistory = new candy_reasonhistory;
+    $reason_history = $candy_reasonhistory->where('reasonhistory_ai_history_id',$h_id);
+    $arr_reason['selected']=[]; $arr_reason['content']='';
+    foreach ($reason_history as $key => $reason) {
+      $arr_reason['selected'][] = $reason['reasonhistory_ai_reason_id'];
+      $arr_reason['content'] += ($key != 0) ? ', '.$reason['tx_reasonhistory_value'] : $reason['tx_reasonhistory_value']; 
+    }
+    return $arr_reason;
+  }
+  public function get_antecedent_by_history($h_id){
+    $candy_antecedenthistory = new candy_antecedenthistory;
+    $antecedent_history = $candy_antecedenthistory->where('antecedenthistory_ai_history_id',$h_id);
+    $arr_antecedent['selected']=[]; $arr_antecedent['content']='';
+    foreach ($antecedent_history as $key => $antecedent) {
+      $arr_antecedent['selected'][] = $antecedent['antecedenthistory_ai_antecedent_id'];
+      $arr_antecedent['content'] += ($key != 0) ? ', '.$antecedent['tx_antecedenthistory_value'] : $antecedent['tx_antecedenthistory_value']; 
+    }
+  }
+  public function get_diagnostic_by_history($h_id){
+    $candy_diagnostichistory = new candy_diagnostichistory;
+    $diagnostic_history = $candy_diagnostichistory->where('diagnostichistory_ai_history_id',$h_id);
+    $arr_diagnostic['selected']=[]; $arr_diagnostic['content']=[];
+    foreach ($diagnostic_history as $key => $diagnostic) {
+      $arr_diagnostic['selected'][] = $diagnostic['diagnostichistory_ai_diagnostic_id'];
+      $arr_diagnostic['content'] += ($key != 0) ? ', '.$diagnostic['tx_diagnostichistory_value'] : $diagnostic['tx_diagnostichistory_value']; 
+    }
+  }
+  public function get_drug_by_history($h_id){
+    $candy_drughistory = new candy_drughistory;
+    $drug_history = $candy_drughistory->where('drughistory_ai_history_id',$h_id);
+    $arr_drug['selected']=[]; $arr_drug['content']=[];
+    foreach ($drug_history as $key => $drug) {
+      $arr_drug['selected'][] = $drug['drughistory_ai_drug_id'];
+      $arr_drug['content'] += ($key != 0) ? ', '.$drug['tx_drughistory_value'] : $drug['tx_drughistory_value']; 
+    }
+  }
 	public function get_history_by_date ($date_id) {
 		$candy_history = new candy_history;
+    $candy_diagnostichistory = new candy_diagnostichistory;
+    $candy_drughistory = new candy_drughistory;
+
 		$rs_history = $candy_history->where('history_ai_date_id','=',$date_id)->firstorfail();
-    $reason_history = json_decode($rs_history['tx_history_reason'], true);
-    $ 
-    $history = {"'.$date_id.'":{"physical_exam":{"skin":$rs_history['tx_pe_skin'],"head":$rs_history['tx_pe_head'],"orl":$rs_history['tx_pe_orl'],"neck":$rs_history['tx_pe_neck'],"respiratory":$rs_history['tx_pe_respiratory'],"cardiac":$rs_history['tx_pe_cardiac'],"auscultation":$rs_history['tx_pe_auscultation'],"inspection":$rs_history['tx_pe_inspection'],"palpation":$rs_history['tx_pe_palpation'],"hip":$rs_history['tx_pe_hip'],"condition":$rs_history['tx_pe_condition'],"breathing":$rs_history['tx_pe_condition'],"hydration":$rs_history['tx_pe_hydration'],"fever":$rs_history['tx_pe_fever'],"pupils":$rs_history['tx_pe_pupils']},
-    "history":{"reason":{"selected":$reason_history['selected'],"content":$reason_history['content']},
-    "current":{"content":$rs_history['tx_history_current']},
-    "antecedent":{"selected":"$antecedent_history['selected']","content":"'.$raw_antecedent['content'].'"},
+
+    $reason_history = $this->get_reason_by_history($rs_history['ai_history_id']);
+    $antecedent_history = $this->get_antecedent_by_history($rs_history['ai_history_id']);
+    $diagnostic_history = $this->get_diagnostic_by_history($rs_history['ai_history_id']);
+    $drug_history = $this->get_drug_by_history($rs_history['ai_history_id']);
+
+    $history = '{"'.$date_id.'":{"physical_exam":{"skin":"'.$rs_history['tx_pe_skin'].'","head":"'.$rs_history['tx_pe_head'].'","orl":"'.$rs_history['tx_pe_orl'].'","neck":"'.$rs_history['tx_pe_neck'].'","respiratory":"'.$rs_history['tx_pe_respiratory'].'","cardiac":"'.$rs_history['tx_pe_cardiac'].'","auscultation":"'.$rs_history['tx_pe_auscultation'].'","inspection":"'.$rs_history['tx_pe_inspection'].'","palpation":"'.$rs_history['tx_pe_palpation'].'","hip":"'.$rs_history['tx_pe_hip'].'","condition":"'.$rs_history['tx_pe_condition'].'","breathing":"'.$rs_history['tx_pe_condition'].'","hydration":"'.$rs_history['tx_pe_hydration'].'","fever":"'.$rs_history['tx_pe_fever'].'","pupils":"'.$rs_history['tx_pe_pupils'].'"},
+    "history":{"reason":{"selected":"'.json_encode($reason_history['selected']).'","content":"'.$reason_history['content'].'"},
+    "current":{"content":"'.$rs_history['tx_history_current'].'"},
+    "antecedent":{"selected":"'.json_encode($antecedent_history['selected']).'","content":"'.$antecedent_history['content'].'"},
     "examination":{"content":null},
-    "diagnostic":{"selected":[],"content":null},
-    "comment":{"content":null},
-    "plan":{"content":null},
-    "vital_sign":{"fc":null,"fr":null,"tas":null,"tad":null,"temp":null,"gc":null}},
+    "diagnostic":{"selected":"'.json_encode($diagnostic_history['selected']).'","content":"'.$diagnostic_history['content'].'"},
+    "comment":{"content":"'.$rs_history['tx_history_comment'].'"},
+    "plan":{"selected":"'.json_encode($drug_history['selected']).'","content":"'.$drug_history['content'].'"},
+    "vital_sign":"'.json_encode($rs_history['tx_history_vitalsign']).'",
     
-    "laboratory":{"hemoglobin":[null,false],"hematocrit":[null,false],"platelet":[null,false],"redbloodcell":[null,false],"urea":[null,false],"creatinine":[null,false],"whitebloodcell":[null,false],"lymphocytes":[null,false],"neutrophils":[null,false],"monocytes":[null,false],"basophils":[null,false],"eosinophils":[null,false],"result":[null,false]}}}
+    "laboratory":{
+      "hemoglobin":"'.json_encode($rs_history['tx_lab_hemoglobin']).'",
+      "hematocrit":"'.json_encode($rs_history['tx_lab_hematocrit']).'",
+      "platelet":"'.json_encode($rs_history['tx_lab_platelet']).'",
+      "redbloodcell":"'.json_encode($rs_history['tx_lab_hemoglobin']).'",
+      "urea":"'.json_encode($rs_history['tx_lab_urea']).'",
+      "creatinine":"'.json_encode($rs_history['tx_lab_creatinine']).'",
+      "whitebloodcell":"'.json_encode($rs_history['tx_lab_whitebloodcell']).'",
+      "lymphocytes":"'.json_encode($rs_history['tx_lab_lymphocytes']).'",
+      "neutrophils":"'.json_encode($rs_history['tx_lab_neutrophils']).'",
+      "monocytes":"'.json_encode($rs_history['tx_lab_monocytes']).'",
+      "basophils":"'.json_encode($rs_history['tx_lab_basophils']).'",
+      "eosinophils":"'.json_encode($rs_history['tx_lab_eosinophils']).'",
+      "result":"'.json_encode($rs_history['tx_lab_result']).'"}}}';
 
 
 		return $rs_history;
