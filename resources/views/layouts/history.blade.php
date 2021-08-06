@@ -53,7 +53,7 @@
       </div>
     </div>
     <!-- Scripts -->
-    <script src="{{ asset('js/general.js') }}" defer></script>
+    <script src="{{ asset('js/mp.js') }}"></script>
     <script src="{{ asset('js/materialize.min.js') }}" defer></script>
         @yield('javascript')
     <script type="text/javascript">

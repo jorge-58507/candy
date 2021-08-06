@@ -15,7 +15,7 @@ class CreateCandyAntecedenthistoriesTable extends Migration
     {
         Schema::create('candy_antecedenthistories', function (Blueprint $table) {
             $table->bigIncrements('ai_antecedenthistory_id');
-            $table->integer('antecedenthistory_ai_history_id');
+            $table->integer('antecedenthistory_tx_patient_id');
             $table->integer('antecedenthistory_ai_antecedent_id');
             $table->string('tx_antecedenthistory_value');
             $table->timestamps();

@@ -24,14 +24,14 @@
                   </div>
                   <div id="recipe_medicine_list" class="col s12 list h_100">
                     <?php foreach($raw_druglist as $key => $rs_druglist){ ?>
-                      <div id="<?php echo $key; ?>" data-target="side_nav" class="sidenav-trigger item compact" onclick="cls_document.medicine_picklist(this)" title="<?php echo $rs_druglist['comertial']; ?>"><?php echo $rs_druglist['generic']; ?></div>
+                      <div id="<?php echo $key; ?>" data-target="side_nav" class="sidenav-trigger item compact truncate" onclick="cls_document.medicine_picklist(this)" title="<?php echo $rs_druglist['comertial']; ?>"><?php echo $rs_druglist['value']; ?></div>
                     <?php } ?>
                   </div>
                 </div>
               </div>
               <div class="col s8 recipe_container">
                 <span class="font_bolder">Receta M&eacute;dica</span>
-                <textarea id="ta_recipe_medicine" class="bs_1 border_teal"><?php echo $document['prescription']['recipe']; ?></textarea>
+                <textarea id="ta_recipe_recipe" class="bs_1 border_teal" onchange="cls_document.set_state_drug('recipe',this.value)"><?php echo $history['history_drug']['content']; ?></textarea>
               </div>            
             </div>
 
@@ -48,7 +48,7 @@
               </div>
               <div class="col s8 recipe_container">
                 <span class="font_bolder">Indicaciones</span>
-                <textarea id="ta_recipe_indication" class="bs_1 border_teal"><?php echo $document['prescription']['indication']; ?></textarea>
+                <textarea id="ta_recipe_indication" class="bs_1 border_teal" onchange="cls_document.set_state_drug('indication',this.value)"><?php echo $history['tx_history_plan']; ?></textarea>
               </div>            
             </div>
             <div class="col s12 center-align py_5">

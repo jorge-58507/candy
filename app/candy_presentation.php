@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class candy_diagnostichistory extends Model
+class candy_presentation extends Model
 {
     //
 }

@@ -35,14 +35,14 @@ Route::get('/filter_date_by_date/{date}', 'dateController@filter_date_by_date')-
 
 // PRINTS
 // Route::get('/print_lab/{date_slug}', 'printController@print_history_laboratory');
-// Route::get('/print_report/{date_slug}', 'printController@print_history_report');
+Route::get('/print_report/{date_slug}', 'printController@print_history_report');
 // Route::get('/print_medicalorder/{date_slug}', 'printController@print_history_medicalorder');
 // Route::get('/print_constancy/{date_slug}', 'printController@print_document_constancy');
 // Route::get('/print_incapacity/{date_slug}', 'printController@print_document_incapacity');
 
 Route::post('/save_sidenav_patient', 'patientController@store');
 // Route::post('/save_sidenav_reason', 'requestController@save_sidenav_reason');
-// Route::post('/save_frecuency_dose','drugController@new_frecuency_dose');
+Route::post('/save_dose','drugController@store_dose');
 // Route::post('/drug_dose','drugController@save_dose');
 // Route::post('/drug_frecuency','drugController@save_frecuency');
 Route::post('/logmedic','medicController@log');
@@ -68,7 +68,7 @@ Route::resource('configuration', 'configurationController')->middleware('auth');
 Route::resource('patient', 'patientController')->middleware('auth');
 Route::resource('reason', 'reasonController')->middleware('auth');
 Route::resource('history', 'historyController')->middleware('auth');
+Route::resource('drug', 'drugController')->middleware('auth');
 // Route::resource('order', 'orderController',['middleware' => 'mw_CheckLogin']);
 // Route::resource('document', 'documentController',['middleware' => 'mw_CheckLogin']);
-// Route::resource('drug', 'drugController',['middleware' => 'mw_CheckLogin']);
 // Route::resource('treatment', 'treatmentController',['middleware' => 'mw_CheckMedic']);

@@ -83,10 +83,10 @@
               <div class="col s12"><span id="caption_date">Citas del D&iacute;a</span></div>
             </div>
             <div class="row dtbl_head">
-              <div class="col s5 m4 teal">PACIENTE</div>
-              <div class="col s1 m2 teal">HORA</div>
-              <div class="col s2 teal">MOTIVO</div>
-              <div class="col s2 hide-on-med-and-down teal">ESTADO</div>
+              <div class="col s5 m6 l4 teal">PACIENTE</div>
+              <div class="col s3 m2 teal">HORA</div>
+              <div class="col l2 hide-on-med-and-down teal">MOTIVO</div>
+              <div class="col l2 hide-on-med-and-down teal">ESTADO</div>
               <div class="col s4 m4 l2 teal">&nbsp;</div>
             </div>
             <div class="row dtbl_body" id="dtbl_date">

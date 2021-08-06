@@ -5,10 +5,10 @@
   <link type="text/css" rel="stylesheet" href="{{ asset('css/history.css') }}"/>
 @endsection
 @section('content')
-  <?php
+  <?php 
     $raw_reasonlist = array();
     foreach ($raw_history['reasonlist'] as $key => $rs_reason) {
-      $raw_reasonlist[$rs_reason['ai_reason_id']] = $rs_reason['tx_reason_value'];
+      $raw_reasonlist[] = ["id"=>$rs_reason['ai_reason_id'], "value"=>$rs_reason['tx_reason_value']];
     }
     $raw_currentlist = array();
     foreach ($raw_history['currentlist'] as $key => $rs_reason) {
@@ -16,7 +16,7 @@
     }
     $raw_antecedentlist = array();
     foreach ($raw_history['antecedentlist'] as $key => $rs_antecedent) {
-      $raw_antecedentlist[$rs_antecedent['ai_antecedent_id']] = $rs_antecedent['tx_antecedent_value'];
+      $raw_antecedentlist[] = ["id"=>$rs_antecedent['ai_antecedent_id'], "value"=>$rs_antecedent['tx_antecedent_value']];
     }
     $raw_examinationlist = array();
     foreach ($raw_history['examinationlist'] as $key => $rs_examination) {
@@ -24,18 +24,13 @@
     }
     $raw_diagnosticlist = array();
     foreach ($raw_history['diagnosticlist'] as $key => $recordset) {
-      $raw_diagnosticlist[$recordset['ai_diagnostic_id']] = $recordset['tx_diagnostic_value'];
+      $raw_diagnosticlist[] = ["id"=>$recordset['ai_diagnostic_id'], "value"=>$recordset['tx_diagnostic_value']];
     }
     $raw_planlist = array();
     foreach ($raw_history['planlist'] as $key => $recordset) {
       $raw_planlist[$recordset['tx_plan_title']] = $recordset['tx_plan_value'];
     }
     $raw_condition = array();
-    // $raw_condition['condicion']=[];
-    // $raw_condition['respiracion']=[];
-    // $raw_condition['hidratacion']=[];
-    // $raw_condition['fiebre']=[];
-    // $raw_condition['pupilas']=[];
     foreach ($raw_history['condition'] as $key => $value) {
       $raw_condition[$value['tx_ef_title']] = json_decode($value['tx_ef_value'],true);
     }
@@ -56,20 +51,15 @@
     foreach ($raw_history['profile_order'] as $order_id => $value) {
       $raw_order['profile'][$order_id] = $value;
     }
-    // echo json_encode($raw_order); return false;
 
-    // $raw_decoded = json_decode($raw_history['json_history'], true); 
-    // $rs_history = json_decode($raw_decoded['tx_history_value'],true);
     $history = json_decode($raw_history['json_history'],true);
     $vitalsign = json_decode($history['tx_history_vitalsign'], true);
-    // $history = $rs_history[$raw_history['dateopened']['ai_date_id']];
-    // $rs_document = json_decode($raw_decoded['tx_history_document'],true);
-    // $document = $rs_document[$raw_history['dateopened']['ai_date_id']];
     
+
+
     $raw_druglist = array();
     foreach ($raw_history['druglist'] as $key => $rs_drug) {
-      $raw_druglist[$rs_drug['ai_drug_id']]['generic'] = $rs_drug['tx_drug_generic'];
-      $raw_druglist[$rs_drug['ai_drug_id']]['comertial'] = $rs_drug['tx_drug_comertial'];
+      $raw_druglist[] = ["id"=>$rs_drug['ai_drug_id'],"value"=>$rs_drug['tx_drug_generic'],"comertial"=>$rs_drug['tx_drug_comertial']];
     }
     $raw_treatmentlist = array();
     foreach ($raw_history['treatmentlist'] as $key => $rs_treatment) {
@@ -77,6 +67,9 @@
       $raw_treatmentlist[$rs_treatment['ai_treatment_id']]['json'] = json_decode($rs_treatment['tx_treatment_json'], true);
       $raw_treatmentlist[$rs_treatment['ai_treatment_id']]['slug'] = $rs_treatment['tx_treatment_slug'];
     }
+
+
+
   ?>
   <div class="row content">
     <div class="col s12">
@@ -93,15 +86,15 @@
       </div>
       <ul id="" class="tabs transparent bb_1 border_gray">
         <li class="tab col s2 font_bolder"><a id="li_pe" href="#tab_anamnesis">Examen F&iacute;sico</a></li>
-        <li class="tab col s3 font_bolder"><a id="li_history"  href="#tab_history">Historia M&eacute;dica</a></li>
+        <li class="tab col s3 font_bolder"><a id="li_history" class="active" href="#tab_history">Historia M&eacute;dica</a></li>
         <li class="tab col s2 font_bolder"><a id="li_laboratory" href="#tab_laboratory">Laboratorio</a></li>
         {{-- <li class="tab col s3 font_bolder"><a class="" href="#tab_history">Estudio Complementario</a></li> --}}
-        <li class="tab col s2 font_bolder"><a id="li_document" class="active" href="#tab_document">Papeler&iacute;a</a></li>
+        <li class="tab col s2 font_bolder"><a id="li_document" class="" href="#tab_document">Papeler&iacute;a</a></li>
       </ul>
 {{-- ###############################    TAB ANAMNESIS     ############################# --}}
       <div id="tab_anamnesis" class="col s12 py_5">
         <?php
-          include 'php/history/inc_anamnesis.php'
+          include 'php/history/inc_anamnesis.php';
         ?>
       </div>
 {{-- ###############################    TAB HISTORY     ############################# --}}
@@ -111,27 +104,27 @@
             <span class="font_bolder">Signos Vitales</span>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_ef_fc" name="txt_ef_fc" type="text" class="" onkeyup="set_state_vital('fc',this.value)" value="<?php echo $history['history']['vital_sign']['fc']; ?>">
+            <input id="txt_ef_fc" name="txt_ef_fc" type="text" class="" onkeyup="cls_examination.set_state_vital('fc',this.value)" value="<?php echo $vitalsign['fc']; ?>">
             <label for="txt_ef_fc">F.C.</label>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_ef_fr" name="txt_ef_fr" type="text" class="" onkeyup="set_state_vital('fr',this.value)" value="<?php echo $history['history']['vital_sign']['fr']; ?>" >
+            <input id="txt_ef_fr" name="txt_ef_fr" type="text" class="" onkeyup="cls_examination.set_state_vital('fr',this.value)" value="<?php echo $vitalsign['fr']; ?>" >
             <label for="txt_ef_fr">F.R.</label>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_ef_tas" name="txt_ef_tas" type="text" class="" onkeyup="set_state_vital('tas',this.value)" value="<?php echo $history['history']['vital_sign']['tas']; ?>">
+            <input id="txt_ef_tas" name="txt_ef_tas" type="text" class="" onkeyup="cls_examination.set_state_vital('tas',this.value)" value="<?php echo $vitalsign['tas']; ?>">
             <label for="txt_ef_tas">TAS</label>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_ef_tad" name="txt_ef_tad" type="text" class="" onkeyup="set_state_vital('tad',this.value)" value="<?php echo $history['history']['vital_sign']['tad']; ?>">
+            <input id="txt_ef_tad" name="txt_ef_tad" type="text" class="" onkeyup="cls_examination.set_state_vital('tad',this.value)" value="<?php echo $vitalsign['tad']; ?>">
             <label for="txt_ef_tad">TAD</label>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_ef_temp" name="txt_ef_temp" type="text" class="" onkeyup="set_state_vital('temp',this.value)" value="<?php echo $history['history']['vital_sign']['temp']; ?>">
+            <input id="txt_ef_temp" name="txt_ef_temp" type="text" class="" onkeyup="cls_examination.set_state_vital('temp',this.value)" value="<?php echo $vitalsign['temp']; ?>">
             <label for="txt_ef_temp">Temp.</label>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_ef_gc" name="txt_ef_gc" type="text" class="" onkeyup="set_state_vital('gc',this.value)" value="<?php echo $history['history']['vital_sign']['gc']; ?>">
+            <input id="txt_ef_gc" name="txt_ef_gc" type="text" class="" onkeyup="cls_examination.set_state_vital('gc',this.value)" value="<?php echo $vitalsign['gc']; ?>">
             <label for="txt_ef_gc">G.C.</label>
           </div>
         </div>
@@ -142,13 +135,13 @@
               <input id="txt_filter_reason" type="text" class="h_30" placeholder="Buscar..." onkeyup="filter_list('reason',this.value);">
             </div>
             <div id="reason_list" class="col s12 list h_100">
-              @foreach ($raw_reasonlist as $key => $reason)
-                <div id="{{ $key }}" class="item compact" onclick="pick_list('reason',this.id,this.innerHTML)">{{ $reason }}</div>
-              @endforeach
+              {{-- @foreach ($raw_reasonlist as $key => $reason)
+                <div id="{{ $reason['id'] }}" class="item compact" onclick="pick_list('reason',this.id,this.innerHTML)">{{ $reason['value'] }}</div>
+              @endforeach --}}
             </div>
           </div>
           <div class="col s8 history_container">
-            <?php $reason_txt = ($history['history']['reason']['content'] != '') ? $history['history']['reason']['content'] : $raw_history['dateopened']['tx_reason_value']; ?>
+            <?php $reason_txt = ($history['history_reason']['content'] != '') ? $history['history_reason']['content'] : $raw_history['dateopened']['tx_reason_value']; ?>
             <textarea id="txt_history_reason" class="bs_1 border_teal">{{ $reason_txt }}</textarea>
           </div>
         </div>
@@ -159,13 +152,13 @@
             <input id="txt_filter_currentillness" type="text" class="h_30" placeholder="Buscar..." onkeyup="filter_list('currentillness',this.value);">
           </div>
           <div id="current_list" class="col s12 list h_100">
-            @foreach ($raw_currentlist as $title => $value)
+            {{-- @foreach ($raw_currentlist as $title => $value)
               <div id="{{ $value }}" title="{{ $value }}" class="item compact" onclick="pick_list('current',this.id)">{{ $title }}</div>
-            @endforeach
+            @endforeach --}}
           </div>
         </div>
         <div class="col s8 history_container">
-            <textarea id="txt_history_currentillness" class="bs_1 border_teal"><?php echo $history['history']['current']['content']; ?></textarea>
+            <textarea id="txt_history_currentillness" class="bs_1 border_teal"><?php echo $history['tx_history_current']; ?></textarea>
         </div>
 {{-- @@@@@@@@@@@@@@@@@@@@@@           ANTECEDENTES     @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}
         <div class="pt_10 col s4">
@@ -174,13 +167,13 @@
             <input id="txt_filter_antecedent" type="text" class="h_30" placeholder="Buscar..." onkeyup="filter_list('antecedent',this.value);">
           </div>
           <div id="antecedent_list" class="col s12 list h_100">
-            @foreach ($raw_antecedentlist as $id => $value)
+            {{-- @foreach ($raw_antecedentlist as $id => $value)
               <div id="{{ $id }}" class="item compact" onclick="pick_list('antecedent',this.id,this.innerHTML)">{{ $value }}</div>
-            @endforeach
+            @endforeach --}}
           </div>
         </div>
         <div class="col s8 history_container">
-          <textarea id="txt_history_antecedent" class="bs_1 border_teal"><?php echo $history['history']['antecedent']['content']; ?></textarea>
+          <textarea id="txt_history_antecedent" class="bs_1 border_teal"><?php echo $history['history_antecedent']['content']; ?></textarea>
         </div>
 {{-- @@@@@@@@@@@@@@@@@@@@@@           EXAMEN FISICO     @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}
         <div class="pt_10 col s4">
@@ -189,13 +182,13 @@
             <input id="txt_filter_examination" type="text" class="h_30" placeholder="Buscar..." onkeyup="filter_list('examination',this.value);">
           </div>
           <div id="examination_list" class="col s12 list h_100">
-            @foreach ($raw_examinationlist as $id => $value)
+            {{-- @foreach ($raw_examinationlist as $id => $value)
               <div id="{{ $id }}" class="item compact" title="{{ $value }}" onclick="pick_list('examination',this.id,this.innerHTML)">{{ $value }}</div>
-            @endforeach
+            @endforeach --}}
           </div>
         </div>
         <div class="col s8 history_container">
-          <textarea id="txt_history_examination" class="bs_1 border_teal"><?php echo $history['history']['examination']['content']; ?></textarea>
+          <textarea id="txt_history_examination" class="bs_1 border_teal"><?php echo $history['tx_history_examination']; ?></textarea>
         </div>
 {{-- @@@@@@@@@@@@@@@@@@@@@@           DIAGNOSTICO     @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}
         <div class="pt_10 col s4">
@@ -204,34 +197,87 @@
             <input id="txt_filter_diagnostic" type="text" class="h_30" placeholder="Buscar..." onkeyup="filter_list('diagnostic',this.value);">
           </div>
           <div id="diagnostic_list" class="col s12 list h_100">
-            @foreach ($raw_diagnosticlist as $id => $value)
+            {{-- @foreach ($raw_diagnosticlist as $id => $value)
               <div id="{{ $id }}" class="item compact" onclick="pick_list('diagnostic',this.id,this.innerHTML)">{{ $value }}</div>
-            @endforeach
+            @endforeach --}}
           </div>
         </div>
         <div class="col s8 history_container">
-          <textarea id="txt_history_diagnostic" class="bs_1 border_teal"><?php echo $history['history']['diagnostic']['content']; ?></textarea>
+          <textarea id="txt_history_diagnostic" class="bs_1 border_teal"><?php echo $history['history_diagnostic']['content']; ?></textarea>
         </div>
 {{-- @@@@@@@@@@@@@@@@@@@@@@           COMENTARIO     @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}
         <div class="col s12 history_container">
           <span class="font_bolder">Comentario</span>
-          <textarea id="txt_history_comment" class="bs_1 border_teal"><?php echo $history['history']['comment']['content']; ?></textarea>
+          <textarea id="txt_history_comment" class="bs_1 border_teal"><?php echo $history['tx_history_comment']; ?></textarea>
         </div>
 {{-- @@@@@@@@@@@@@@@@@@@@@@           PLAN     @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}
-        <div class="pt_10 col s4">
-          <span class="font_bolder">Plan</span>
-          <div class="col s12 history_filter">
-            <input id="txt_filter_plan" type="text" class="h_30" placeholder="Buscar..." onkeyup="filter_list('plan',this.value);">
+        <div class="row">
+          <div class="col s4">
+            <div class="row">
+              <div class="input-field col s10">
+                <input id="txt_history_drug" type="text" onkeyup="cls_plan.filter_list(this.value)">
+                <label for="txt_history_drug">Medicamentos</label>
+              </div>
+              <div class="col s2 pt_10">
+                <a id="btn_medicine_plus" class="btn-floating waves-effect waves-light btn btn-small modal-trigger" href="#history_medicine_modal"><i class="fa fa-plus left"></i></a>
+                <!-- Modal Structure MEDICINE -->
+                <form action="" onsubmit="event.preventDefault(); cls_drug.save(this)">
+                  <div id="history_medicine_modal" class="modal">
+                    <div class="modal-content">
+                      <h4>Nuevo Medicamento</h4>
+                      <div class="input-field col s10">
+                        <input id="txt_modal_history_generic" name="txt_drug_generic" type="text" class="" autocomplete="off">
+                        <label for="txt_modal_history_generic">Nombre Generico</label>
+                      </div>
+                      <div class="input-field col s10">
+                        <input id="txt_modal_history_comertial" name="txt_drug_comertial" type="text" class="" autocomplete="off">
+                        <label for="txt_modal_history_comertial">Nombre Comercial</label>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="waves-effect waves-green btn teal">Guardar</button>
+                    </div>
+                  </div>
+                </form>
+                <!-- Modal Structure -->
+              </div>
+              <div id="history_medicine_list" class="col s12 list h_100">
+              </div>
+            </div>
           </div>
-          <div id="plan_list" class="col s12 list h_100">
-            @foreach ($raw_planlist as $title => $value)
-              <div id="{{ $value }}" class="item compact" onclick="pick_list('plan',this.id,this.innerHTML)">{{ $title }}</div>
-            @endforeach
+          <div class="col s8 recipe_container">
+            <span class="font_bolder">Receta M&eacute;dica</span>
+            <textarea id="ta_history_recipe" class="bs_1 border_teal" onchange="cls_document.set_state_drug('recipe',this.value)"><?php echo $history['history_drug']['content']; ?></textarea>
+          </div>            
+        </div>
+
+        <div class="row">
+          <div class="col s4">
+            <div class="row">
+              <div class="col s12">
+                <input id="txt_history_treatment" type="text" onkeyup="cls_plan.filter_treatment(this.value)">
+                <label for="txt_history_treatment">Plan de Tto.</label>
+              </div>
+              <div id="history_treatment_list" class="col s12 list h_100">
+              </div>
+            </div>
           </div>
+          <div class="col s8 recipe_container">
+            <span class="font_bolder">Indicaciones</span>
+            <textarea id="ta_history_indication" class="bs_1 border_teal" onchange="cls_document.set_state_drug('indication',this.value)"><?php echo $history['tx_history_plan']; ?></textarea>
+          </div>            
         </div>
-        <div class="col s8 history_container">
-          <textarea id="txt_history_plan" class="bs_1 border_teal"><?php echo $history['history']['plan']['content']; ?></textarea>
+        <div class="col s12 center-align py_5">
+          <a class="waves-effect waves-light btn btn-large blue dropdown-trigger"  data-target='dropdown_printrecipe'><i class="fa fa-print left"></i>Imprimir</a>
+          <!-- Dropdown Structure -->
+          <ul id='dropdown_printrecipe' class='dropdown-content'>
+            <li><a href="#!" id="print_recipe_half">Media Pagina</a></li>
+            <?php // <li><a href="#!" id="print_medicalorder">Pagina Completa</a></li> ?>
+          </ul>
         </div>
+
+
+
         <div class="col s12 center-align py_5">
           <a id="btn_save_history" class="waves-effect waves-light btn btn-large"><i class="fa fa-save left"></i>Guardar</a>
           <a id="btn_print_report" class="waves-effect waves-light btn btn-large blue"><i class="fa fa-print left"></i>Imprimir</a>
@@ -241,12 +287,12 @@
       <div id="tab_laboratory" class="col s12 py_5 mb_15">
         <div class="row">
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_hemoblobin" name="txt_laboratory_hemoblobin" type="text" class="" value="<?php echo $history['laboratory']['hemoglobin'][0]; ?>">
+            <input id="txt_laboratory_hemoblobin" name="txt_laboratory_hemoblobin" type="text" class="" value="<?php echo $history['tx_lab_hemoglobin'][0]; ?>">
             <label for="txt_laboratory_hemoblobin">Hemoglobina</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['hemoglobin'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_hemoglobin'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_hemoglobin" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -254,12 +300,12 @@
             </div>
           </div>
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_hematocrit" name="txt_laboratory_hematocrit" type="text" class="" value="<?php echo $history['laboratory']['hematocrit'][0] ?>">
+            <input id="txt_laboratory_hematocrit" name="txt_laboratory_hematocrit" type="text" class="" value="<?php echo $history['tx_lab_hematocrit'][0] ?>">
             <label for="txt_laboratory_hematocrit">Hematocrito</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['hematocrit'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_hematocrit'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_hematocrit" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -267,12 +313,12 @@
             </div>
           </div>
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_platelet" name="txt_laboratory_platelet" type="text" class="" value="<?php echo $history['laboratory']['platelet'][0] ?>">
+            <input id="txt_laboratory_platelet" name="txt_laboratory_platelet" type="text" class="" value="<?php echo $history['tx_lab_platelet'][0] ?>">
             <label for="txt_laboratory_platelet">Plaqueta</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['platelet'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_platelet'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_platelet" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -280,12 +326,12 @@
             </div>
           </div>
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_redbloodcell" name="txt_laboratory_redbloodcell" type="text" class="" value="<?php echo $history['laboratory']['redbloodcell'][0] ?>">
+            <input id="txt_laboratory_redbloodcell" name="txt_laboratory_redbloodcell" type="text" class="" value="<?php echo $history['tx_lab_redbloodcell'][0] ?>">
             <label for="txt_laboratory_redbloodcell">G. Rojos</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['redbloodcell'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_redbloodcell'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_redbloodcell" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -293,12 +339,12 @@
             </div>
           </div>
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_urea" name="txt_laboratory_urea" type="text" class="" value="<?php echo $history['laboratory']['urea'][0] ?>">
+            <input id="txt_laboratory_urea" name="txt_laboratory_urea" type="text" class="" value="<?php echo $history['tx_lab_urea'][0] ?>">
             <label for="txt_laboratory_urea">Urea</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['urea'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_urea'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_urea" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -306,12 +352,12 @@
             </div>
           </div>
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_creatinine" name="txt_laboratory_creatinine" type="text" class="" value="<?php echo $history['laboratory']['creatinine'][0] ?>">
+            <input id="txt_laboratory_creatinine" name="txt_laboratory_creatinine" type="text" class="" value="<?php echo $history['tx_lab_creatinine'][0] ?>">
             <label for="txt_laboratory_creatinine">Creatinina</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['creatinine'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_creatinine'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_creatinine" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -319,12 +365,12 @@
             </div>
           </div>
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_whitebloodcell" name="txt_laboratory_whitebloodcell" type="text" class="" value="<?php echo $history['laboratory']['whitebloodcell'][0] ?>">
+            <input id="txt_laboratory_whitebloodcell" name="txt_laboratory_whitebloodcell" type="text" class="" value="<?php echo $history['tx_lab_whitebloodcell'][0] ?>">
             <label for="txt_laboratory_whitebloodcell">G. Blancos</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['whitebloodcell'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_whitebloodcell'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_whitebloodcell" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -332,12 +378,12 @@
             </div>
           </div>
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_lymphocytes" name="txt_laboratory_lymphocytes" type="text" class="" value="<?php echo $history['laboratory']['lymphocytes'][0] ?>">
+            <input id="txt_laboratory_lymphocytes" name="txt_laboratory_lymphocytes" type="text" class="" value="<?php echo $history['tx_lab_lymphocytes'][0] ?>">
             <label for="txt_laboratory_lymphocytes">Linfocitos</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['lymphocytes'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_lymphocytes'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_lymphocytes" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -345,12 +391,12 @@
             </div>
           </div>
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_neutrophils" name="txt_laboratory_neutrophils" type="text" class="" value="<?php echo $history['laboratory']['neutrophils'][0] ?>">
+            <input id="txt_laboratory_neutrophils" name="txt_laboratory_neutrophils" type="text" class="" value="<?php echo $history['tx_lab_neutrophils'][0] ?>">
             <label for="txt_laboratory_neutrophils">Neutrofilos</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['neutrophils'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_neutrophils'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_neutrophils" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -358,12 +404,12 @@
             </div>
           </div>
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_monocytes" name="txt_laboratory_monocytes" type="text" class="" value="<?php echo $history['laboratory']['monocytes'][0] ?>">
+            <input id="txt_laboratory_monocytes" name="txt_laboratory_monocytes" type="text" class="" value="<?php echo $history['tx_lab_monocytes'][0] ?>">
             <label for="txt_laboratory_monocytes">Monocitos</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['monocytes'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_monocytes'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_monocytes" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -371,12 +417,12 @@
             </div>
           </div>
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_basophils" name="txt_laboratory_basophils" type="text" class="" value="<?php echo $history['laboratory']['basophils'][0] ?>">
+            <input id="txt_laboratory_basophils" name="txt_laboratory_basophils" type="text" class="" value="<?php echo $history['tx_lab_basophils'][0] ?>">
             <label for="txt_laboratory_basophils">Bas&oacute;filos</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['basophils'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_basophils'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_basophils" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -384,12 +430,12 @@
             </div>
           </div>
           <div class="input-field col s3 m2 mb_0">
-            <input id="txt_laboratory_eosinophils" name="txt_laboratory_eosinophils" type="text" class="" value="<?php echo $history['laboratory']['eosinophils'][0] ?>">
+            <input id="txt_laboratory_eosinophils" name="txt_laboratory_eosinophils" type="text" class="" value="<?php echo $history['tx_lab_eosinophils'][0] ?>">
             <label for="txt_laboratory_eosinophils">Eosin&oacute;filos</label>
             <div class="switch">
               <label>
                 Off
-                <?php $checked = ($history['laboratory']['eosinophils'][1]) ? 'checked' : '' ?>
+                <?php $checked = ($history['tx_lab_eosinophils'][1]) ? 'checked' : '' ?>
                 <input type="checkbox" id="cb_eosinophils" {{ $checked }}>
                 <span class="lever"></span>
                 Alerta
@@ -426,7 +472,7 @@
                 <div class="switch ">
                   <label>
                     Alerta
-                    <?php $checked = ($history['laboratory']['result'][1]) ? 'checked' : '' ?>
+                    <?php $checked = ($history['tx_lab_result'][1]) ? 'checked' : '' ?>
                     <input type="checkbox" id="cb_result" {{ $checked }}>
                     <span class="lever"></span>
                   </label>
@@ -440,7 +486,7 @@
             </div>
           </div>
           <div class="col s12 m8 laboratory_container">
-            <textarea id="txt_laboratory_result" class="bs_1 border_teal"><?php echo $history['laboratory']['result'][0] ?></textarea>
+            <textarea id="txt_laboratory_result" class="bs_1 border_teal"><?php echo $history['tx_lab_result'][0] ?></textarea>
           </div>
         </div>
         <div class="col s12 center-align py_5">
@@ -539,8 +585,7 @@
                 </div>
               </div>
               <div class="col s8  document_container">
-                <textarea id="txt_document_laboratory" class="bs_1 border_teal">medicalorder_laboratory</textarea>
-                <!-- <textarea id="txt_document_laboratory" class="bs_1 border_teal">{{ $document['medicalorder']['laboratory'] }}</textarea> -->
+                <textarea id="txt_document_laboratory" class="bs_1 border_teal">{{ $history['history_laboratoryorder']['content'] }}</textarea>
               </div>
 {{-- profile --}}
             </div>
@@ -577,8 +622,7 @@
                 </div>
               </div>
               <div class="col s8  document_container">
-                <textarea id="txt_document_complementary" class="bs_1 border_teal">complementario documento</textarea>
-                <!-- <textarea id="txt_document_complementary" class="bs_1 border_teal">{{ $document['medicalorder']['complementary'] }}</textarea> -->
+                <textarea id="txt_document_complementary" class="bs_1 border_teal">{{ $history['history_complementaryorder']['content'] }}</textarea>
               </div>            
 {{-- ESTUDIOS COMPLEMENTARIOS --}}
             </div>
@@ -594,7 +638,7 @@
           </div>
           <div id="tab_documentrecipe" class="col s12">
             {{-- ###################     RECIPE    ###################### --}}
-<?php       include 'php/history/inc_document_prescription.php';  ?>            
+<?php       include 'php/history/inc_document_prescription.php';  ?>
           </div>
           <div id="tab_documentincapacity" class="col s12">
             {{-- ###################     CONSTANCIA e INCAPACIDAD    ###################### --}}
@@ -649,11 +693,13 @@
 
   
   <script type="text/javascript">
-    const cls_general = new general_funct();
+    // const cls_general = new general_funct;
 
+    const cls_general = new general_funct;
 
     
     document.addEventListener('DOMContentLoaded', function() {
+
 
       // MATERIALIZE INSTANCES
       var el_tab = document.querySelectorAll('.tabs');
@@ -673,19 +719,31 @@
 
       // MATERIALIZE INSTANCES
       cls_document.filter_treatment('');
+
     });
     var raw_reasonlist = JSON.parse('<?php echo json_encode($raw_reasonlist); ?>');
-    const cls_reason = new class_reason ('<?php echo json_encode($history['history']['reason']['selected']); ?>');
+    const cls_reason = new class_reason ('<?php echo json_encode($history['history_reason']['selected']); ?>');
+    cls_reason.filter_list('');
+
     var raw_currentlist = JSON.parse('<?php echo json_encode($raw_currentlist); ?>');
     const cls_current = new class_current;
+    cls_current.filter_list('');
     var raw_antecedentlist = JSON.parse('<?php echo json_encode($raw_antecedentlist); ?>');
-    const cls_antecedent = new class_antecedent('<?php echo json_encode($history['history']['antecedent']['selected']); ?>');
+    const cls_antecedent = new class_antecedent('<?php echo json_encode($history['history_antecedent']['selected']); ?>');
+    cls_antecedent.filter_list('');
     var raw_examinationlist = JSON.parse('<?php echo json_encode($raw_examinationlist); ?>','<?php echo json_encode($raw_examinationlist); ?>');
     const cls_examination = new class_examination;
+    cls_examination.filter_list('');
     var raw_diagnosticlist = JSON.parse('<?php echo json_encode($raw_diagnosticlist); ?>');
-    const cls_diagnostic = new class_diagnostic('<?php echo json_encode($history['history']['diagnostic']['selected']); ?>');
-    var raw_planlist = JSON.parse('<?php echo json_encode($raw_planlist); ?>');
+    const cls_diagnostic = new class_diagnostic('<?php echo json_encode($history['history_diagnostic']['selected']); ?>');
+    cls_diagnostic.filter_list('');
+    var raw_druglist = JSON.parse('<?php echo json_encode($raw_druglist); ?>');
+    const cls_drug = new class_drug(raw_druglist);
+
+    const cls_document = new class_document(<?php echo $raw_history['dateopened']['ai_date_id']; ?>,'<?php echo json_encode($history['history_drug']['selected']); ?>');
+    
     const cls_plan = new class_plan;
+    cls_plan.filter_list('');
 
     var raw_laboratorylist = JSON.parse('<?php echo json_encode($raw_order['laboratory']); ?>');
     var raw_eflist = JSON.parse('<?php echo json_encode($raw_efdatabase); ?>');
@@ -694,11 +752,10 @@
     const cls_medical_history = new class_medical_history('<?php echo $raw_history['dateopened']['ai_date_id']; ?>');
     const cls_laboratory = new class_laboratory;
 
-    const cls_document = new class_document(<?php echo $raw_history['dateopened']['ai_date_id']; ?>,'null');
-    // const cls_document = new class_document(<?php echo $raw_history['dateopened']['ai_date_id']; ?>,'<?php echo json_encode($document['prescription']['drug_selected']); ?>');
+    
     var raw_complementarylist = JSON.parse('<?php echo json_encode($raw_order['complementary']); ?>');
     var raw_profilelist = JSON.parse('<?php echo json_encode($raw_order['profile']); ?>');
-    var raw_druglist = JSON.parse('<?php echo json_encode($raw_druglist); ?>');
+    // var raw_druglist = JSON.parse('<?php echo json_encode($raw_druglist); ?>');
     var raw_treatmentlist = JSON.parse('<?php echo json_encode($raw_treatmentlist); ?>')
     
     document.getElementById('paste_pe')
@@ -719,7 +776,7 @@
   
   document.getElementById('btn_print_report')
   .addEventListener('click', function (e) {
-    print_html('/print_report/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
+    cls_general.print_html('/print_report/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
     e.preventDefault();
   });
 // LABORATORIO
@@ -743,7 +800,7 @@
     e.preventDefault();
     document.getElementById('btn_save_laboratory').click();
     setTimeout(() => {
-      print_html('/print_lab/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
+      cls_general.print_html('/print_lab/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
     }, 500);
   })
   // MEDICAL ORDER
@@ -766,12 +823,12 @@
 
   document.getElementById('print_medicalorder_half')
   .addEventListener('click', (e) => {
-    print_html('/print_medicalorder_half/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
+    cls_general.print_html('/print_medicalorder_half/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
     e.preventDefault();
   })
   document.getElementById('print_medicalorder')
   .addEventListener('click', (e) => {
-    print_html('/print_medicalorder/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
+    cls_general.print_html('/print_medicalorder/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
     e.preventDefault();
   })
 // RECIPE
@@ -793,7 +850,7 @@
 // INCAPACITY
     document.getElementById('btn_documentconstancy')
   .addEventListener('click', function() {
-    print_html('/print_constancy/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
+    cls_general.print_html('/print_constancy/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
   })
 
     document.getElementById('btn_modal_incapacitysave')
@@ -807,7 +864,7 @@
     const obj_document_incapacity = cls_document.make_json_incapacity();
     cls_document.save_document(<?php echo $raw_history['dateopened']['ai_date_id']; ?>, obj_document_medicalorder, obj_document_prescription, obj_document_incapacity);
     setTimeout(function(){
-      print_html('/print_incapacity/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
+      cls_general.print_html('/print_incapacity/<?php echo $raw_history['dateopened']['tx_date_slug']; ?>')
     },500);
     e.preventDefault();
   });

@@ -17,7 +17,7 @@ class CreateCandyDrugsTable extends Migration
             $table->increments('ai_drug_id');
             $table->integer('drug_ai_medic_id')->default(0);
             $table->string('tx_drug_generic');
-            $table->string('tx_drug_comertial');
+            $table->string('tx_drug_comertial')->nullable();
             $table->string('tx_drug_category');
             $table->longText('tx_drug_dose');
             $table->longText('tx_drug_frecuency');

@@ -16,7 +16,7 @@ class CreateCandyDrughistoriesTable extends Migration
         Schema::create('candy_drughistories', function (Blueprint $table) {
             $table->bigIncrements('ai_drughistory_id');
             $table->integer('drughistory_ai_history_id');
-            $table->integer('drughistory_ai_drug_history');
+            $table->integer('drughistory_ai_drug_id');
             $table->string('tx_drughistory_value');
             $table->timestamps();
         });

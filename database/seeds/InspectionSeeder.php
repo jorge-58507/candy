@@ -36,19 +36,19 @@ class InspectionSeeder extends Seeder
 
         $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Ectropión'; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
 
-        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Quistes de retención de Naboth '; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
+        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Quistes de retención de Naboth'; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
 
-        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Pólipos cervicales '; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
+        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Pólipos cervicales'; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
 
-        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Vaginitis '; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
+        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Vaginitis'; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
 
-        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Atresia del himen '; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
+        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Atresia del himen'; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
 
         $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Retracción de labios vaginales'; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
 
-        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Retracción del clítoris '; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
+        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Retracción del clítoris'; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
 
-        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'dolor al movilizar el cérvix '; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
+        $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'dolor al movilizar el cérvix'; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
 
         $candy_hip = new candy_hip; $candy_hip->hip_ai_medic_id = 0; $candy_hip->tx_hip_value = 'Ovarios palpables'; $candy_hip->tx_hip_status = 1; $candy_hip->created_at = time(); $candy_hip->updated_at = time(); $candy_hip->save();
 

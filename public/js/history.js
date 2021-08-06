@@ -1,10 +1,10 @@
 function filter_list (target,str) {
   switch (target) {
     case 'reason':
-      cls_reason.filter_reason(str);
+      cls_reason.filter_list(str);
     break;
     case 'currentillness':
-      cls_current.filter_current(str);
+      cls_current.filter_list(str);
     break;
     case 'antecedent':
       cls_antecedent.filter_list(str);
@@ -23,10 +23,10 @@ function filter_list (target,str) {
 function pick_list (target,id,content) {
   switch (target) {
     case 'reason':
-      cls_reason.pick_reason(id,content);
+      cls_reason.pick_list(id,content);
     break;
     case 'current':
-      cls_current.pick_current(id,content);
+      cls_current.pick_list(id,content);
     break;
     case 'antecedent':
       cls_antecedent.pick_list(id,content);
@@ -51,53 +51,55 @@ class class_reason {
       this.reason_selected.push(array_selected[a]);
     }
   }
-  filter_reason (str) {
-    console.log(this.reason_selected);
-
+  filter_list (str) {
     var haystack = raw_reasonlist;
     var needles = str.split(' ');
     var raw_filtered = new Object;
+    var counter = 0;
     for (var i in haystack) {
       var ocurrencys = 0;
       for (const a in needles) {
-        if (haystack[i].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
+        if (haystack[i]['value'].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
       }
       if (ocurrencys === needles.length) {
-        raw_filtered[i] = haystack[i];
+        raw_filtered[counter] = { "id": haystack[i]['id'], "value": haystack[i]['value']};  counter++;
       }
     }
-    this.render_list ('reason_list', this.reorder_list(raw_filtered));
+    this.render_list('reason_list', raw_filtered);
   }
   render_list (target, obj) {
     var body_list = '';
-    for (var a in obj) {  body_list += `<div id="${a}" class="item compact truncate" onclick="pick_list('reason',this.id,this.innerHTML)">${obj[a]}</div>`;  }
+    for (var a in obj) { body_list += `<div id="${obj[a]['id']}" class="item compact truncate" onclick="pick_list('reason',this.id,this.innerHTML)">${obj[a]['value']}</div>`;  }
     document.getElementById(target).innerHTML = body_list;
   }
-  reorder_list (obj) {
-    var raw_ordered = []; var raw_returned = new Object;
-    for (var a in obj) {  raw_ordered.push(obj[a]+'*-*'+a); }
-    raw_ordered.sort();
-    for (var i = 0; i < raw_ordered.length; i++) {
-     var splited = raw_ordered[i].split("*-*");
-     raw_returned["'"+splited[1]+"'"] = splited[0];
-    }
-    return raw_returned
-  }
-  pick_reason (id,content) {
-    if (this.reason_selected.indexOf(id) < 0) {
-      var new_value = '';
-      new_value += ((document.getElementById('txt_history_reason').value).length < 1) ? content : `, ${content}`;
-      document.getElementById('txt_history_reason').value += new_value;
-      this.reason_selected.push(id);
-      class_reason.prototype.reason_selected = this.reason_selected;
+  pick_list (id,content) {
+    var ans = this.compare(content);
+    if (ans === true) {
+      M.toast({ html: '¡Ya Existe!' });
+      return false;
     }else{
-      M.toast({html: '¡Ya Existe!'});
+      var new_value = ((document.getElementById('txt_history_reason').value).length < 1) ? cls_general.ucFirst(content) : `, ${content.toLowerCase()}`;
+      document.getElementById('txt_history_reason').value = (document.getElementById('txt_history_reason').value).trim() +new_value;
+      // if (this.reason_selected.indexOf(id) < 0) {
+      //   this.reason_selected.push(id);
+      //   cls_reason.reason_selected = this.reason_selected;   
+      // }
     }
+  }
+  compare (value) {
+    var content = document.getElementById('txt_history_reason').value;
+    var raw_content = content.split(",");
+    var raw_content_lowercase = [];
+    for(var a in raw_content){
+      raw_content_lowercase.push((raw_content[a].toLowerCase()).trim());
+    }
+    var str = (value.toLowerCase()).trim();
+    return raw_content_lowercase.includes(str);
   }
 }
 
 class class_current {
-  filter_current (str) {
+  filter_list (str) {
     var haystack = raw_currentlist;
     var needles = str.split(' ');
     var raw_filtered = new Object;
@@ -127,9 +129,12 @@ class class_current {
     }
     return raw_returned
   }
-  pick_current (content,title) {
-    var new_value = content;
-    document.getElementById('txt_history_currentillness').value = new_value;
+  pick_list (value) {
+    var content = document.getElementById('txt_history_currentillness').value;
+    string.indexOf(substring)
+    if(content.indexOf(value) !== -1){
+      document.getElementById('txt_history_currentillness').value = cls_general.ucFirst(value);
+    };
   }
 }
 
@@ -145,46 +150,60 @@ class class_antecedent {
     var haystack = raw_antecedentlist;
     var needles = str.split(' ');
     var raw_filtered = new Object;
+    var counter = 0;
     for (var i in haystack) {
       var ocurrencys = 0;
       for (const a in needles) {
-        if (haystack[i].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
+        if ((haystack[i]['value'].toLowerCase()).indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
       }
       if (ocurrencys === needles.length) {
-        raw_filtered[i] = haystack[i];
+        raw_filtered[counter] = { "id": haystack[i]['id'], "value": haystack[i]['value'] }; counter++;
       }
     }
-    this.render_list ('antecedent_list', this.reorder_list(raw_filtered));
+    this.render_list ('antecedent_list', raw_filtered);
   }
   render_list (target, obj) {
     var body_list = '';
-    for (var a in obj) {  body_list += `<div id="${a}" class="item compact truncate" onclick="pick_list('antecedent',this.id,this.innerHTML)">${obj[a]}</div>`;  }
+    for (var a in obj) { body_list += `<div id="${obj[a]['id']}" class="item compact truncate" onclick="pick_list('antecedent',this.id,this.innerHTML)">${obj[a]['value']}</div>`;  }
     document.getElementById(target).innerHTML = body_list;
   }
-  reorder_list (obj) {
-    var raw_ordered = []; var raw_returned = new Object;
-    for (var a in obj) {  raw_ordered.push(obj[a]+'*-*'+a); }
-    raw_ordered.sort();
-    for (var i = 0; i < raw_ordered.length; i++) {
-     var splited = raw_ordered[i].split("*-*");
-     raw_returned[""+splited[1]+""] = splited[0];
-    }
-    return raw_returned
-  }
+  // reorder_list (obj) {
+  //   var raw_ordered = []; var raw_returned = new Object;
+  //   for (var a in obj) {  raw_ordered.push(obj[a]+'*-*'+a); }
+  //   raw_ordered.sort();
+  //   for (var i = 0; i < raw_ordered.length; i++) {
+  //    var splited = raw_ordered[i].split("*-*");
+  //    raw_returned[""+splited[1]+""] = splited[0];
+  //   }
+  //   return raw_returned
+  // }
   pick_list (id,content) {
-    if (this.antecedent_selected.indexOf(id) < 0) {
-      var new_value = '';
-      new_value += ((document.getElementById('txt_history_antecedent').value).length < 1) ? content : `, ${content}`;
-      document.getElementById('txt_history_antecedent').value += new_value;
-      this.antecedent_selected.push(id);
-      class_antecedent.prototype.antecedent_selected = this.antecedent_selected;
-    }else{
-      M.toast({html: '¡Ya Existe!'});
+    var ans = this.compare(content);
+    if (ans === true) {
+      M.toast({ html: '¡Ya Existe!' });
+      return false;
+    } else {
+      var new_value = ((document.getElementById('txt_history_antecedent').value).length < 1) ? cls_general.ucFirst(content) : `, ${content.toLowerCase()}`;
+      document.getElementById('txt_history_antecedent').value = (document.getElementById('txt_history_antecedent').value).trim() + new_value;
+      if (this.antecedent_selected.indexOf(id) < 0) {
+        this.antecedent_selected.push(id);
+        cls_antecedent.antecedent_selected = this.antecedent_selected;
+      }
     }
+  }
+  compare(value) {
+    var content = document.getElementById('txt_history_antecedent').value;
+    var raw_content = content.split(",");
+    var raw_content_lowercase = [];
+    for (var a in raw_content) {
+      raw_content_lowercase.push((raw_content[a].toLowerCase()).trim());
+    }
+    var str = (value.toLowerCase()).trim();
+    return raw_content_lowercase.includes(str);
   }
 }
 
-class class_examination {
+class class_examination { //examen fisico de la pestaña historia
   filter_list (str) {
     var haystack = raw_examinationlist;
     var needles = str.split(' ');
@@ -280,117 +299,164 @@ class class_diagnostic {
     var haystack = raw_diagnosticlist;
     var needles = str.split(' ');
     var raw_filtered = new Object;
+    var counter = 0;
     for (var i in haystack) {
       var ocurrencys = 0;
       for (const a in needles) {
-        if (haystack[i].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
+        if (haystack[i]['value'].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
       }
       if (ocurrencys === needles.length) {
-        raw_filtered[i] = haystack[i];
+        raw_filtered[counter] = { "id": haystack[i]['id'], "value": haystack[i]['value'] };
+        counter++;
       }
     }
-    this.render_list ('diagnostic_list', this.reorder_list(raw_filtered));
+    this.render_list ('diagnostic_list', raw_filtered);
   }
   render_list (target, obj) {
     var body_list = '';
-    for (var a in obj) {  body_list += `<div id="${a}" class="item compact truncate" onclick="pick_list('diagnostic',this.id,this.innerHTML)">${obj[a]}</div>`;  }
+    for (var a in obj) {  body_list += `<div id="${obj[a]['id']}" class="item compact truncate" onclick="pick_list('diagnostic',this.id,this.innerHTML)">${obj[a]['value']}</div>`;  }
     document.getElementById(target).innerHTML = body_list;
   }
-  reorder_list (obj) {
-    var raw_ordered = []; var raw_returned = new Object;
-    for (var a in obj) {  raw_ordered.push(obj[a]+'*-*'+a); }
-    raw_ordered.sort();
-    for (var i = 0; i < raw_ordered.length; i++) {
-     var splited = raw_ordered[i].split("*-*");
-     raw_returned[""+splited[1]+""] = splited[0];
-    }
-    return raw_returned
-  }
   pick_list (id,content) {
-    if (this.diagnostic_selected.indexOf(id) < 0) {
+    var ans = this.compare(content);
+    if (ans === 1) {
+      M.toast({ html: '¡Ya Existe!' });
+      return false;
+    } else {
       var new_value = '';
       new_value += ((document.getElementById('txt_history_diagnostic').value).length < 1) ? content : `, ${content}`;
-      document.getElementById('txt_history_diagnostic').value += new_value;
-      this.diagnostic_selected.push(id);      
-      class_diagnostic.prototype.diagnostic_selected = this.diagnostic_selected;
-    }else{
-      M.toast({html: '¡Ya Existe!'});
+      document.getElementById('txt_history_diagnostic').value = (document.getElementById('txt_history_diagnostic').value).trim() + new_value;
+      if (this.diagnostic_selected.indexOf(id) < 0) {
+        this.diagnostic_selected.push(id);
+        cls_diagnostic.diagnostic_selected = this.diagnostic_selected;
+      }
+    }
+  }
+  compare(value) {
+    var content = document.getElementById('txt_history_diagnostic').value;
+    var str = (value.toLowerCase()).trim();
+    var raw_content = content.split(",");
+    var raw_content_lowercase = [];
+    for (var a in raw_content) {
+      raw_content_lowercase.push((raw_content[a].toLowerCase()).trim());
+    }
+    if (raw_content_lowercase.includes(str)) {
+      return 1; //si existe
+    } else {
+      return 0; //no existe
     }
   }
 }
-class class_plan {
-  filter_list (str,target='plan_list') {
-    var haystack = raw_planlist;
+class class_plan {  //FILTRAR MEDICAMENTOS EN HISTORIA
+  filter_list (str) {
+    var raw_drug = cls_drug.filter(str);
+    var content_list = this.generate_druglist(raw_drug);
+    document.getElementById('history_medicine_list').innerHTML = content_list;
+  }
+  generate_druglist(raw_drug) {
+    var content_list = '';
+    for (const x in raw_drug) {
+      content_list += `<div id="${raw_drug[x]['id']}" class="sidenav-trigger item compact" data-target="side_nav" onclick="cls_document.medicine_picklist(this)" title="${raw_drug[x]['comertial']}">${raw_drug[x]['value']}</div>`;
+    }
+    return content_list;
+  }
+}
+class class_drug
+{
+  constructor(drug_list) {
+    this.raw_druglist = drug_list;
+  }
+  save(obj_form){
+    var array_form = {};
+    for (let a = 0; a < obj_form.length; a++) {
+      array_form[obj_form[a].name] = obj_form[a].value;
+    }
+    if (array_form['txt_drug_generic'].length === 0 || /^\s+$/.test(array_form['txt_drug_generic'])) { // VERIFICANDO QUE GENERIC ESTE LLENO
+      M.toast({html:'Debe indicar el nombre genérico.'});
+      return false;
+    }
+    var elem = document.getElementById('history_medicine_modal');
+    var instance_modal = M.Modal.getInstance(elem);
+    instance_modal.close()
+
+    var url = '/drug'; var method = 'POST';
+    var body = JSON.stringify({ a: array_form['txt_drug_generic'], b: array_form['txt_drug_comertial'] });
+    var funcion = function (obj_drug) {
+      M.toast({html: obj_drug['message']})
+      cls_drug.raw_druglist = obj_drug['drug_list'];
+    }
+    cls_general.laravel_request(url, method, funcion, body);
+
+  }
+  // lookfor_medicine(str) {
+  filter (str) {
+    var haystack = this.raw_druglist;
     var needles = str.split(' ');
     var raw_filtered = new Object;
+    var counter = 0;
     for (var i in haystack) {
       var ocurrencys = 0;
       for (const a in needles) {
-        if (haystack[i].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
+        if (haystack[i]['comertial'] != null) {
+          if (haystack[i]['value'].toLowerCase().indexOf(needles[a].toLowerCase()) > -1 || haystack[i]['comertial'].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
+        } else {
+          if (haystack[i]['value'].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
+        }
       }
       if (ocurrencys === needles.length) {
-        raw_filtered[i] = haystack[i];
+        raw_filtered[counter] = { "id": haystack[i]['id'], "value": haystack[i]['value'], "comertial": haystack[i]['comertial'] };
+        counter++;
       }
-    }
-    this.render_list(target, this.reorder_list(raw_filtered));
+    }    
+    return this.reorder_druglist(raw_filtered)
   }
-  render_list (target, obj) {
-    var body_list = '';
-    for (var a in obj) {  body_list += `<div id="${obj[a]}" class="item compact truncate" onclick="pick_list('plan',this.id,this.innerHTML)">${a}</div>`;  }
-    document.getElementById(target).innerHTML = body_list;
-  }
-  reorder_list (obj) {
-    var raw_ordered = []; var raw_returned = new Object;
-    for (var a in obj) {  raw_ordered.push(obj[a]+'*-*'+a); }
+  reorder_druglist(obj) {
+    var raw_ordered = [];
+    var raw_returned = new Object;
+    for (var a in obj) { raw_ordered.push(obj[a]['value'] + '*-*' + obj[a]['id'] + '*-*' + obj[a]['comertial']); }
     raw_ordered.sort();
     for (var i = 0; i < raw_ordered.length; i++) {
-     var splited = raw_ordered[i].split("*-*");
-     raw_returned[""+splited[1]+""] = splited[0];
+      var splited = raw_ordered[i].split("*-*");
+      raw_returned[i] = new Object;
+      raw_returned[i]['id'] = splited[1];
+      raw_returned[i]['value'] = splited[0];
+      raw_returned[i]['comertial'] = splited[2];
     }
     return raw_returned
   }
-  pick_list(id, content, target ='txt_history_plan') {
-    var old_value = document.getElementById(target).value;
-    var expresion = new RegExp(content);
-    if (!expresion.test(old_value)) {
-      var new_value = '';
-      new_value += ((document.getElementById(target).value).length < 1) ? content : `\n${content}`;
-      document.getElementById(target).value += new_value;
-    }else{
-      M.toast({html: '¡Ya Existe!'});
-    }
-  }
+
+
 }
 
 
 // ######################    function to ef
-function ef_render_list (target, obj) {
-  var body_list = '';
-  for (var a in obj) {  body_list += `<div class="item compact truncate" title="${obj[a]}" onclick="ef_pick_list('${target}',this.innerHTML)">${obj[a]}</div>`;  }
-  document.getElementById('ef_'+target+'_list').innerHTML = body_list;
-}
-function ef_reorder_list (obj) {
-  var raw_ordered = []; var raw_returned = new Object;
-  for (var a in obj) {  raw_ordered.push(obj[a]+'*-*'+a); }
-  raw_ordered.sort();
-  for (var i = 0; i < raw_ordered.length; i++) {
-   var splited = raw_ordered[i].split("*-*");
-   raw_returned[""+splited[1]+""] = splited[0];
-  }
-  return raw_returned
-}
-function ef_pick_list (target,content) {
-  content = content.toLowerCase();
-  var old_value = (document.getElementById('txt_ef_'+target).value).toLowerCase();
-  var expresion = new RegExp(content);
-  if (!expresion.test(old_value)) {
-    var new_value = '';
-    new_value += ((document.getElementById('txt_ef_'+target).value).length < 1) ? cls_general.uc_first(content) : `, ${content}`;
-    document.getElementById('txt_ef_'+target).value += new_value;
-  }else{
-    M.toast({html: '¡Ya Existe!'});
-  }
-}
+// function ef_render_list (target, obj) {
+//   var body_list = '';
+//   for (var a in obj) {  body_list += `<div class="item compact truncate" title="${obj[a]}" onclick="ef_pick_list('${target}',this.innerHTML)">${obj[a]}</div>`;  }
+//   document.getElementById('ef_'+target+'_list').innerHTML = body_list;
+// }
+// function ef_reorder_list (obj) {
+//   var raw_ordered = []; var raw_returned = new Object;
+//   for (var a in obj) {  raw_ordered.push(obj[a]+'*-*'+a); }
+//   raw_ordered.sort();
+//   for (var i = 0; i < raw_ordered.length; i++) {
+//    var splited = raw_ordered[i].split("*-*");
+//    raw_returned[""+splited[1]+""] = splited[0];
+//   }
+//   return raw_returned
+// }
+// function ef_pick_list (target,content) {
+//   content = content.toLowerCase();
+//   var old_value = (document.getElementById('txt_ef_'+target).value).toLowerCase();
+//   var expresion = new RegExp(content);
+//   if (!expresion.test(old_value)) {
+//     var new_value = '';
+//     new_value += ((document.getElementById('txt_ef_'+target).value).length < 1) ? cls_general.uc_first(content) : `, ${content}`;
+//     document.getElementById('txt_ef_'+target).value += new_value;
+//   }else{
+//     M.toast({html: '¡Ya Existe!'});
+//   }
+// }
 
 // #################      PASTE PHISICAL EXAM       #################
 
@@ -445,36 +511,45 @@ class class_medical_history {
     return obj_physical_exam;
   }
   make_json_history () {    
-    requiredFields (['txt_ef_fc','txt_ef_fr']);
-    var valid = check_invalid(['txt_ef_fc','txt_ef_fr']);
+    cls_general.requiredFields (['txt_ef_fc','txt_ef_fr']);
+    var valid = cls_general.check_invalid(['txt_ef_fc','txt_ef_fr']);
     if (!valid || document.getElementById('txt_ef_fc').value < 0.01 || document.getElementById('txt_ef_fr').value < 0.01) { 
       $('html, body').animate({ scrollTop: $("li.tab").offset().top }, 500);
-      // document.getElementById("li_laboratory").classList.remove('active');
-      // document.getElementById("li_history").classList.add('active');
       M.toast({html: '¡Faltan Campos!'});
       return false;
     }
-    const reason = Object.create(class_reason.prototype);
-    const antecedent = Object.create(class_antecedent.prototype);
-    const diagnostic = Object.create(class_diagnostic.prototype);
+    const reason = Object.create(cls_reason);
+    const antecedent = Object.create(cls_antecedent);
+    const diagnostic = Object.create(cls_diagnostic);
+    const drug = Object.create(cls_document);
     var obj_history = {}; 
     obj_history['reason'] = {};
     obj_history['reason']['selected'] = (reason.reason_selected) ? reason.reason_selected : [];
     obj_history['reason']['content'] = document.getElementById("txt_history_reason").value;
+
     obj_history['current'] = {};
     obj_history['current']['content'] = document.getElementById("txt_history_currentillness").value;
+
     obj_history['antecedent'] = {};
     obj_history['antecedent']['selected'] = (antecedent.antecedent_selected) ? antecedent.antecedent_selected : [];
     obj_history['antecedent']['content'] = document.getElementById("txt_history_antecedent").value;
+
     obj_history['examination'] = {};
     obj_history['examination']['content'] = document.getElementById("txt_history_examination").value;
+
     obj_history['diagnostic'] = {};
     obj_history['diagnostic']['selected'] = (diagnostic.diagnostic_selected) ? diagnostic.diagnostic_selected : [];
     obj_history['diagnostic']['content'] = document.getElementById("txt_history_diagnostic").value;
+
     obj_history['comment'] = {};
     obj_history['comment']['content'] = document.getElementById("txt_history_comment").value;
+
+                                  console.log(antecedent.antecedent_selected);
     obj_history['plan'] = {};
-    obj_history['plan']['content'] = document.getElementById("txt_history_plan").value;
+    obj_history['plan']['selected'] = (drug.medicine_selected) ? drug.medicine_selected : [];
+    obj_history['plan']['recipe'] = document.getElementById("ta_history_recipe").value;
+    obj_history['plan']['indication'] = document.getElementById("ta_history_indication").value;
+
     obj_history['vital_sign'] = {};
     obj_history['vital_sign']['fc'] = document.getElementById("txt_ef_fc").value;
     obj_history['vital_sign']['fr'] = document.getElementById("txt_ef_fr").value;
@@ -486,8 +561,8 @@ class class_medical_history {
   }
   paste_pe () {
     const physical_exam = this.make_json_pe();
-    requiredFields (['txt_ef_fc','txt_ef_fr']);
-    var valid = check_invalid(['txt_ef_fc','txt_ef_fr']);
+    cls_general.requiredFields (['txt_ef_fc','txt_ef_fr']);
+    var valid = cls_general.check_invalid(['txt_ef_fc','txt_ef_fr']);
     if (!valid) { return false; }
     if (document.getElementById('txt_ef_fc').value < 0.01 || document.getElementById('txt_ef_fr').value < 0.01) {
       $('html, body').animate({ scrollTop: $("li.tab").offset().top }, 500);
@@ -542,12 +617,12 @@ ${condition}, ${breathing}, ${hydration}, ${fever}, ${pupils} ${ef_skin} ${ef_he
     var regexp = / +/g;
     document.getElementById('txt_history_examination').value = content_examination.replace(regexp," ");
   }
-  save_history(date_id, obj_physical_exam, obj_history, obj_laboratory) {
+  save_history(date_id, obj_physical_exam, obj_history, obj_laboratory) { //el salvado de la historia al guardar la receta
     this.array_medical_history[date_id]['physical_exam'] = obj_physical_exam;
     this.array_medical_history[date_id]['history'] = obj_history;
     this.array_medical_history[date_id]['laboratory'] = obj_laboratory;
-    // console.log(this.array_medical_history);
-    var url = '/history'; var method = 'POST';
+    // console.log(this.array_medical_history[date_id]['history']); return false;
+    var url = '/history/'+date_id; var method = 'PUT';
     var body = JSON.stringify({ a: this.array_medical_history });
     var funcion = function (history_obj) {
       M.toast({ html: history_obj['message'], classes: 'blue' });
@@ -582,8 +657,7 @@ ${condition}, ${breathing}, ${hydration}, ${fever}, ${pupils} ${ef_skin} ${ef_he
       }
       document.getElementById("card_container").innerHTML = content;     
     }
-    laravel_request(url, method, funcion, body);
-
+    cls_general.laravel_request(url, method, funcion, body);
   }
     // FIN DE CLASE HISTORIA
 }
@@ -920,50 +994,67 @@ class class_document {
     var content_list = this.generate_druglist(raw_drug);
     document.getElementById('recipe_medicine_list').innerHTML = content_list;
   }
-  lookfor_medicine (str) {
-    var haystack = raw_druglist;
-    var needles = str.split(' ');
-    var raw_filtered = new Object;
-    for (var i in haystack) {
-      var ocurrencys = 0;
-      for (const a in needles) {
-        if (haystack[i]['generic'].toLowerCase().indexOf(needles[a].toLowerCase()) > -1 || haystack[i]['comercial'].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
-      }
-      if (ocurrencys === needles.length) {
-        raw_filtered[i] = haystack[i];
-      }
-    }    
-    return this.reorder_druglist(raw_filtered)
-  }
-  reorder_druglist(obj) {
-    var raw_ordered = []; var raw_returned = new Object;
-    for (var a in obj) { raw_ordered.push(obj[a]['generic'] + '*-*' + a); }
-    raw_ordered.sort();
-    for (var i = 0; i < raw_ordered.length; i++) {
-      var splited = raw_ordered[i].split("*-*");
-      raw_returned[splited[1]] = new Object;
-      raw_returned[splited[1]]['generic'] = splited[0];
-      raw_returned[splited[1]]['comercial'] = obj[splited[1]]['comercial'];
-    }  
-    return raw_returned
+  // lookfor_medicine (str) {
+  //   var haystack = raw_druglist;
+  //   var needles = str.split(' ');
+  //   var raw_filtered = new Object;
+  //   var counter = 0;
+  //   for (var i in haystack) {
+  //     var ocurrencys = 0;
+  //     for (const a in needles) {
+  //       if (haystack[i]['value'].toLowerCase().indexOf(needles[a].toLowerCase()) > -1 || haystack[i]['comertial'].toLowerCase().indexOf(needles[a].toLowerCase()) > -1) { ocurrencys++ }
+  //     }
+  //     if (ocurrencys === needles.length) {
+  //       raw_filtered[counter] = { "id": haystack[i]['id'], "value": haystack[i]['value'], "comertial": haystack[i]['comertial'] };
+  //       counter++;
+  //     }
+  //   }    
+  //   return this.reorder_druglist(raw_filtered)
+  // }
+  // reorder_druglist(obj) {
+  //   var raw_ordered = []; 
+  //   var raw_returned = new Object;
+  //   for (var a in obj) { raw_ordered.push(obj[a]['value'] + '*-*' + obj[a]['id'] + '*-*' + obj[a]['comertial']); }
+  //   raw_ordered.sort();
+  //   for (var i = 0; i < raw_ordered.length; i++) {
+  //     var splited = raw_ordered[i].split("*-*");
+  //     raw_returned[i] = new Object;
+  //     raw_returned[i]['id'] = splited[1];
+  //     raw_returned[i]['value'] = splited[0];
+  //     raw_returned[i]['comertial'] = splited[2];
+  //   }  
+  //   return raw_returned
+  // }
+  set_state_drug(field, content) {
+    console.log(field+" llama "+content);
+    // if (content != '') {
+    //   document.getElementById("ta_history_" + field).value = cls_general.val_dec(content, 1, 0, 1);
+    //   document.getElementById("ta_document_" + field).value = cls_general.val_dec(content, 1, 0, 1);
+    // } else {
+      document.getElementById("ta_recipe_" + field).value = content;
+      document.getElementById("ta_history_" + field).value = content;
+    // }
+    M.updateTextFields();
   }
   generate_druglist(raw_drug) {
     var content_list = '';
     for (const x in raw_drug) {
-      content_list += `<div id="${x}" class="sidenav-trigger item compact" data-target="side_nav" onclick="cls_document.medicine_picklist(this)" title="${raw_drug[x]['comercial']}">${raw_drug[x]['generic']}</div>`;
+      content_list += `<div id="${raw_drug[x]['id']}" class="sidenav-trigger item compact" data-target="side_nav" onclick="cls_document.medicine_picklist(this)" title="${raw_drug[x]['comertial']}">${raw_drug[x]['value']}</div>`;
     }
     return content_list;
   }
   medicine_picklist (div_obj) {
-    var drug_id = parseInt(div_obj.id);    
+    var drug_id = parseInt(div_obj.id);
     if (this.medicine_selected.indexOf(drug_id) >= 0) {
       M.toast({ html: '¡Ya Existe!'});
     }
-    var url = '/drug_info/' + drug_id; var method = 'GET';
+    var url = '/drug/' + drug_id; var method = 'GET';
     var body = '';
     var funcion = function (ans_obj) {
-      set_sidenav(`/php/side_panel/inc_prescription_paste.php?drug_generic=${ans_obj.tx_drug_generic}&drug_comertial=${ans_obj.tx_drug_comertial}&dose_json=${ans_obj.tx_drug_dose}&frecuency_json=${ans_obj.tx_drug_frecuency}&presentation_json=${ans_obj.presentation}&drug=${drug_id}`);
-      var raw_frecuency = JSON.parse(ans_obj.tx_drug_frecuency);
+      var array_presentation = ans_obj.presentation;
+      var ans_obj = ans_obj[0];
+      cls_general.set_sidenav(`/php/side_panel/inc_prescription_paste.php?drug_generic=${ans_obj.tx_drug_generic}&drug_comertial=${ans_obj.tx_drug_comertial}&dose_json=${ans_obj.tx_drug_dose}&frecuency_json=${ans_obj.tx_drug_frecuency}&presentation_json=${array_presentation}&drug=${drug_id}`);
+      var raw_frecuency =  JSON.parse(ans_obj.tx_drug_frecuency);
       var raw_dose = JSON.parse(ans_obj.tx_drug_dose);
       setTimeout(function () {
         var el_select = document.querySelectorAll('select');
@@ -974,25 +1065,37 @@ class class_document {
         var dose_autocomplete = document.getElementById('txt_prescription_dose');
         var options = { data: raw_dose }
         var instance_autocomplete = M.Autocomplete.init(dose_autocomplete, options);
-        set_focus('txt_prescription_quantity');
+        cls_general.set_focus('txt_prescription_quantity');
       }, 300)
     }
-    laravel_request(url, method, funcion, body);
+    cls_general.laravel_request(url, method, funcion, body);
   }
-  sidenav_prescription_add(event,drug_id) {
+  generate_prescription (event, drug_id){
     event.preventDefault();
-    requiredFields(['txt_prescription_dose', 'txt_prescription_frecuency']);
+    var array_prescription = this.sidenav_prescription_add(drug_id);
+    if (array_prescription) {
+      //CAMPOS EN HISTORY
+      document.getElementById('ta_history_recipe').value += array_prescription['recipe'];
+      document.getElementById('ta_history_indication').value += array_prescription['indication'];
+      //CAMPOS EN DOCUMENT
+      document.getElementById('ta_recipe_recipe').value += array_prescription['recipe'];
+      document.getElementById('ta_recipe_indication').value += array_prescription['indication'];
+    }
+  }
+  sidenav_prescription_add(drug_id) {
+    cls_general.requiredFields(['txt_prescription_dose', 'txt_prescription_frecuency']);
     var drug_description = document.getElementById('txt_prescription_drug').value;
-    var drug_comertial = document.getElementById('txt_prescription_drug').getAttribute('alt');
+    var drug_comertial = (document.getElementById('txt_prescription_drug').getAttribute('alt') != '') ? `(${document.getElementById('txt_prescription_drug').getAttribute('alt')}) ` : '';
     var prescription_quantity = document.getElementById('txt_prescription_quantity').value;
     var prescription_dose = document.getElementById('txt_prescription_dose').value;
     var presentation = document.getElementById('sel_prescription_presentation');
     var prescription_presentation = presentation[presentation.selectedIndex].innerHTML;
-    var prescription_duration = document.getElementById('txt_prescription_duration').value;
+    var prescription_duration = document.getElementById('txt_prescription_duration').value
     var prescription_frecuency = document.getElementById('txt_prescription_frecuency').value;
     var select_interval = document.getElementById('sel_prescription_interval');
     var interval_factor = select_interval[select_interval.selectedIndex].getAttribute('alt');
     var prescription_interval = select_interval[select_interval.selectedIndex].value;
+
     if (prescription_interval === '' && prescription_duration != '' || prescription_interval != '' && prescription_duration === '' ) {
       document.getElementById('txt_prescription_duration').classList.add('invalid');
     }else{
@@ -1003,30 +1106,35 @@ class class_document {
     if (prescription_interval === '' && prescription_duration === '') {
       document.getElementById('txt_prescription_duration').classList.remove('invalid');
       document.getElementById('txt_prescription_duration').classList.add('valid');
-      prescription_duration = 'nuevo aviso';
+      duration = 'hasta nuevo aviso';
       total_quantity = 'Caja de';
+    }else{
+      var duration = 'durante ' + prescription_duration;
     }
-    var valid = check_invalid(['txt_prescription_dose', 'txt_prescription_frecuency','txt_prescription_duration']);
+    var valid = cls_general.check_invalid(['txt_prescription_dose', 'txt_prescription_frecuency','txt_prescription_duration']);
     if (!valid) { return false; }
 
-    var recipe_content = `${total_quantity} ${drug_description} (${drug_comertial}) de ${prescription_dose}`;
-    var new_recipe = ((document.getElementById('ta_recipe_medicine').value).length < 1) ? recipe_content : `\n${recipe_content}`;
+    var recipe_content = `${total_quantity} ${drug_description} ${drug_comertial}en ${prescription_presentation} de ${prescription_dose}`;
+    var new_recipe = ((document.getElementById('ta_recipe_recipe').value).length < 1 && document.getElementById('ta_recipe_recipe').value === '') ? recipe_content : `\n${recipe_content}`;
     
-    var indication_content = `${drug_description} Adm. ${prescription_quantity} ${prescription_presentation} de ${prescription_dose} cada ${prescription_frecuency} horas hasta ${prescription_duration} ${prescription_interval}.`;
+    var indication_content = `${drug_description}, Adm. ${prescription_quantity} ${prescription_presentation} de ${prescription_dose} cada ${prescription_frecuency} horas ${duration} ${prescription_interval}`;
     var new_indication = ((document.getElementById('ta_recipe_indication').value).length < 1) ? indication_content : `\n${indication_content}`;
     
-    document.getElementById('ta_recipe_medicine').value += new_recipe;
-    document.getElementById('ta_recipe_indication').value += new_indication;
     if (this.medicine_selected.indexOf(drug_id) < 0) {
-      this.medicine_selected.push(drug_id);
+      this.medicine_selected.push({ "id" : drug_id, "description" : drug_description, "quantity" : prescription_quantity, "presentation" : prescription_presentation, "dose" : prescription_dose, "frecuency" : prescription_frecuency, "duration" : prescription_duration, "interval" : prescription_interval});
     }    
-    var url = '/save_frecuency_dose'; var method = 'POST';
+
+//  SALVAR LA DOSIS AL INGRESAR
+    var url = '/save_dose'; var method = 'POST';
     var body = JSON.stringify({ a: prescription_dose, b: drug_id, c: prescription_frecuency });
     var funcion = function (ans_obj) {
       M.toast({ html: ans_obj['message'] });
     }
-    laravel_request(url, method, funcion, body);
+    cls_general.laravel_request(url, method, funcion, body);
     $('.sidenav').sidenav('close');
+        // HACERLE RETURN A ESTO, PARA HACERLE AL CAMPO ADECUADO
+    return {"recipe":new_recipe,"indication":new_indication};
+
   }
   // TRATAMIENTO
   filter_treatment (str) {
@@ -1084,9 +1192,9 @@ class class_document {
         var line_indication = `${array_treatment[a]['description']} Adm. ${array_treatment[a]['quantity']} ${array_treatment[a]['presentation']} de ${array_treatment[a]['dose']} cada ${array_treatment[a]['frecuency']} horas hasta ${prescription_duration} ${array_treatment[a]['interval']}.`;
         indication_content += (indication_content.length < 1) ? line_indication : `\n${line_indication}`;
       }
-      new_recipe += ((document.getElementById('ta_recipe_medicine').value).length < 1) ? recipe_content : `\n${recipe_content}`;
+      new_recipe += ((document.getElementById('ta_recipe_recipe').value).length < 1) ? recipe_content : `\n${recipe_content}`;
       new_indication += ((document.getElementById('ta_recipe_indication').value).length < 1) ? indication_content : `\n${indication_content}`;  
-      document.getElementById('ta_recipe_medicine').value += new_recipe;
+      document.getElementById('ta_recipe_recipe').value += new_recipe;
       document.getElementById('ta_recipe_indication').value += new_indication;
       M.toast({ html: 'Agregado Correctamente' });
     }
@@ -1095,7 +1203,7 @@ class class_document {
 
   make_json_prescription() {
     var raw_prescription = {};
-    var prescription_recipe = document.getElementById("ta_recipe_medicine").value;
+    var prescription_recipe = document.getElementById("ta_recipe_recipe").value;
     var prescription_indication = document.getElementById("ta_recipe_indication").value;
     raw_prescription['recipe'] = prescription_recipe;
     raw_prescription['indication'] = prescription_indication;
@@ -1126,11 +1234,3 @@ class class_document {
     laravel_request(url, method, funcion, body);
   }  
 }
-
-
-
-
-function generate_laboratory_reveal (div) {
-  div.innerHTML = 'probando';
-}
-

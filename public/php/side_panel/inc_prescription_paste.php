@@ -1,10 +1,11 @@
 <?php    
 $json_presentation = $_GET['presentation_json'];
+// echo $json_presentation;
 $drug_id = $_GET['drug'];
 $raw_presentation = json_decode($json_presentation, true);
 ?>
 
-<form name="form_prescription_add" class="" action="" onsubmit="cls_document.sidenav_prescription_add(event,<?php echo $drug_id; ?>);" method="post">
+<form name="form_prescription_add" class="" action="" onsubmit="cls_document.generate_prescription(event,<?php echo $drug_id; ?>);" method="post">
 
   <div class="row">
     <div class="col s12">
@@ -21,11 +22,11 @@ $raw_presentation = json_decode($json_presentation, true);
     <div class="row">
       <div class="input-field col s6">
         <label class="active" for="txt_prescription_quantity" >Cantidad por Toma</label>
-        <input type="number" id="txt_prescription_quantity" name="txt_prescription_quantity" onfocus="validFranz(this.id,'number')" value="1" autocomplete="off" tabindex="1">
+        <input type="number" id="txt_prescription_quantity" name="txt_prescription_quantity" onfocus="cls_general.validFranz(this.id,['number'])" value="1" autocomplete="off" tabindex="1">
       </div>
       <div class="input-field col s6">
         <label class="active" for="txt_prescription_dose" >Dosis</label>
-        <input type="text" id="txt_prescription_dose" name="txt_prescription_dose" onfocus="validFranz(this.id,'number letter')" value="" class="autocomplete" autocomplete="off" tabindex="2">
+        <input type="text" id="txt_prescription_dose" name="txt_prescription_dose" onfocus="cls_general.validFranz(this.id,['number','word'])" value="" class="autocomplete" autocomplete="off" tabindex="2">
       </div>
     </div>
     <div class="row">
@@ -40,13 +41,13 @@ $raw_presentation = json_decode($json_presentation, true);
     </div>
     <div class="row">
       <div class="input-field col s12">
-        <input type="text" id="txt_prescription_frecuency" name="txt_prescription_frecuency" onfocus="validFranz(this.id,'number')" class="autocomplete" autocomplete="off" tabindex="4">
+        <input type="text" id="txt_prescription_frecuency" name="txt_prescription_frecuency" onfocus="cls_general.validFranz(this.id,['number'])" class="autocomplete" autocomplete="off" tabindex="4">
         <label for="txt_prescription_frecuency">Frecuencia en Horas</label>
       </div>
     </div>
     <div class="row">
       <div class="input-field col s6">
-        <input type="text" id="txt_prescription_duration" name="txt_prescription_duration" onfocus="validFranz(this.id,'number')" class="autocomplete" autocomplete="off" tabindex="5">
+        <input type="text" id="txt_prescription_duration" name="txt_prescription_duration" onfocus="cls_general.validFranz(this.id,['number'])" class="autocomplete" autocomplete="off" tabindex="5">
         <label for="txt_prescription_duration">Duraci&oacute;n</label>
       </div>
       <div class="input-field col s6">

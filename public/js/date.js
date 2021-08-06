@@ -34,13 +34,13 @@ class date_funct
     for (var a in obj_date) {
       var status_value = (obj_date[a]['tx_date_status'] === 1) ? 'SIN ATENDER'  : 'ATENDIDO';
       var status_color = (obj_date[a]['tx_date_status'] === 1) ? '#006600'      : '#b92c28';
-      var attend_button = (obj_date[a]['tx_date_status'] === 1) ? 'ATENDER' : 'ATENDIDO';
+      var attend_button = (obj_date[a]['tx_date_status'] === 1) ? '<i class="fa fa-check"></i>' : '<i class="fa fa-ban"></i>';
       var class_button = (obj_date[a]['tx_date_status'] === 1) ? 'teal' : 'orange';
       body += `
       <div class="bb_1 border_teal">
-        <div class="col s5 m4 py_5 center-align">${obj_date[a]['tx_patient_name']}</div>
-        <div class="col s1 m2 py_5 center-align">${obj_date[a]['tx_date_time']}</div>
-        <div class="col s2 py_5 center-align">${obj_date[a]['tx_reason_value']}</div>
+        <div class="col s5 m6 l4 py_5 center-align truncate" title="${obj_date[a]['tx_patient_name']}">${obj_date[a]['tx_patient_name']}</div>
+        <div class="col s3 m2 py_5 center-align truncate" title="${obj_date[a]['tx_date_time']}">${obj_date[a]['tx_date_time']}</div>
+        <div class="col s2 hide-on-med-and-down py_5 center-align truncate" title="${obj_date[a]['tx_reason_value']}">${obj_date[a]['tx_reason_value']}</div>
         <div class="col s2 hide-on-med-and-down py_5 center-align" style="color:${status_color};text-decoration:underline ${status_color};">
           ${status_value}
         </div>
@@ -87,7 +87,6 @@ class date_funct
     var body = '';
     var funcion = function(date_obj) {
       if (date_obj['response'] === 'success') {
-        console.log(date_obj['message']);
         document.location.href = '/history';
       }else{
         M.toast({html: date_obj['message'], classes: 'red darken-4'})

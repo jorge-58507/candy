@@ -4,36 +4,36 @@
             <span class="font_bolder">Signos Vitales</span>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_pe_fc" name="txt_pe_fc" type="text" class="" onblur="cls_examination.set_state_vital('fc',this.value)" value="<?php echo $history['history']['vital_sign']['fc']; ?>">
+            <input id="txt_pe_fc" name="txt_pe_fc" type="text" class="" onblur="cls_examination.set_state_vital('fc',this.value)" value="<?php echo $vitalsign['fc']; ?>">
             <label for="txt_pe_fc">F.C.</label>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_pe_fr" name="txt_pe_fr" type="text" class="" onblur="cls_examination.set_state_vital('fr',this.value)" value="<?php echo $history['history']['vital_sign']['fr']; ?>">
+            <input id="txt_pe_fr" name="txt_pe_fr" type="text" class="" onblur="cls_examination.set_state_vital('fr',this.value)" value="<?php echo $vitalsign['fr']; ?>">
             <label for="txt_pe_fr">F.R.</label>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_pe_tas" name="txt_pe_tas" type="text" class="" onblur="cls_examination.set_state_vital('tas',this.value)" value="<?php echo $history['history']['vital_sign']['tas']; ?>">
+            <input id="txt_pe_tas" name="txt_pe_tas" type="text" class="" onblur="cls_examination.set_state_vital('tas',this.value)" value="<?php echo $vitalsign['tas']; ?>">
             <label for="txt_pe_tas">TAS</label>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_pe_tad" name="txt_pe_tad" type="text" class="" onblur="cls_examination.set_state_vital('tad',this.value)" value="<?php echo $history['history']['vital_sign']['tad']; ?>">
+            <input id="txt_pe_tad" name="txt_pe_tad" type="text" class="" onblur="cls_examination.set_state_vital('tad',this.value)" value="<?php echo $vitalsign['tad']; ?>">
             <label for="txt_pe_tad">TAD</label>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_pe_temp" name="txt_pe_temp" type="text" class="" onblur="cls_examination.set_state_vital('temp',this.value)" value="<?php echo $history['history']['vital_sign']['temp']; ?>">
+            <input id="txt_pe_temp" name="txt_pe_temp" type="text" class="" onblur="cls_examination.set_state_vital('temp',this.value)" value="<?php echo $vitalsign['temp']; ?>">
             <label for="txt_pe_temp">Temp.</label>
           </div>
           <div class="input-field col s6 m4 l1">
-            <input id="txt_pe_gc" name="txt_pe_gc" type="text" class="" onblur="cls_examination.set_state_vital('gc',this.value)" value="<?php echo $history['history']['vital_sign']['gc']; ?>">
+            <input id="txt_pe_gc" name="txt_pe_gc" type="text" class="" onblur="cls_examination.set_state_vital('gc',this.value)" value="<?php echo $vitalsign['gc']; ?>">
             <label for="txt_pe_gc">G.C.</label>
           </div>
         </div>
-        <?php //echo json_encode($raw_condition); return false; ?>
+        <?php // echo json_encode($raw_condition); return false; ?>
         <div class="row">
           <div class="input-field col s4 l2">
             <select id="sel_ef_condition">
 <?php         foreach ($raw_condition['condiciones'] as $key => $value){
-                if ($key == $history['physical_exam']['condition']) { 
+                if ($key == $history['tx_pe_condition']) { 
                   echo "<option value='$key' selected>$value</option>";
                 } else { 
                   echo "<option value='$key'>$value</option>";
@@ -45,7 +45,7 @@
           <div class="input-field col s4 l2">
             <select id="sel_ef_breathing">
 <?php         foreach($raw_condition['respiracion'] as $key => $value){
-                if ($key == $history['physical_exam']['breathing']) {
+                if ($key == $history['tx_pe_breathing']) {
                   echo "<option value='$key' selected>$value</option>";
                 } else { 
                   echo "<option value='$key'>$value</option>";
@@ -57,7 +57,7 @@
           <div class="input-field col s4 l2">
             <select id="sel_ef_hydration">
 <?php         foreach($raw_condition['hidratacion'] as $key => $value){
-                if ($key == $history['physical_exam']['hydration']) {
+                if ($key == $history['tx_pe_hydration']) {
                   echo "<option value='$key' selected>$value</option>";
                 }else{
                   echo "<option value='$key'>$value</option>";
@@ -69,7 +69,7 @@
           <div class="input-field col s4 l2">
             <select id="sel_ef_fever">
 <?php         foreach ($raw_condition['fiebre'] as $key => $value){
-                if ($key == $history['physical_exam']['fever']) {
+                if ($key == $history['tx_pe_fever']) {
                   echo "<option value='$key' selected>$value</option>";
                 } else {
                   echo "<option value='$key'>$value</option>";
@@ -81,7 +81,7 @@
           <div class="input-field col s5 l2">
             <select id="sel_ef_pupils">
 <?php         foreach ($raw_condition['pupilas'] as $key => $value){
-                if ($key == $history['physical_exam']['pupils']) { 
+                if ($key == $history['tx_pe_pupils']) { 
                   echo "<option value='$key' selected>$value</option>";
                 } else { 
                   echo "<option value='$key'>$value</option>";
@@ -106,7 +106,7 @@
             </div>
           </div>
           <div class="col s8 history_container">
-            <textarea id="txt_ef_skin" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Piel')"><?php echo $history['physical_exam']['skin']; ?></textarea>
+            <textarea id="txt_ef_skin" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Piel')"><?php echo $history['tx_pe_skin']; ?></textarea>
           </div>
 <!-- {{-- @@@@@@@@@@@@@@@@@@@@@@           HEAD         @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}  -->
           <div class="pt_10 col s4">
@@ -121,7 +121,7 @@
             </div>
           </div>
           <div class="col s8 history_container">
-            <textarea id="txt_ef_head" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Cabeza')"><?php echo $history['physical_exam']['head']; ?></textarea>
+            <textarea id="txt_ef_head" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Cabeza')"><?php echo $history['tx_pe_head']; ?></textarea>
           </div>
 <!-- {{-- @@@@@@@@@@@@@@@@@@@@@@           ORL         @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}  -->
           <div class="pt_10 col s4">
@@ -136,7 +136,7 @@
             </div>
           </div>
           <div class="col s8 history_container">
-            <textarea id="txt_ef_orl" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'ORL')"><?php echo $history['physical_exam']['orl']; ?></textarea>
+            <textarea id="txt_ef_orl" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'ORL')"><?php echo $history['tx_pe_orl']; ?></textarea>
           </div>
 <!-- {{-- @@@@@@@@@@@@@@@@@@@@@@           CUELLO         @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}  -->
           <div class="pt_10 col s4">
@@ -151,7 +151,7 @@
             </div>
           </div>
           <div class="col s8 history_container">
-            <textarea id="txt_ef_neck" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Cuello')"><?php echo $history['physical_exam']['neck']; ?></textarea>
+            <textarea id="txt_ef_neck" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Cuello')"><?php echo $history['tx_pe_neck']; ?></textarea>
           </div>
 <!-- {{-- @@@@@@@@@@@@@@@@@@@@@@           TORAX         @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}  -->
           <div class="pt_10 col s12 sanson_title">
@@ -170,7 +170,7 @@
             </div>
           </div>
           <div class="col s8 l3 history_container">
-            <textarea id="txt_ef_respiratory" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Respiratorio')"><?php echo $history['physical_exam']['respiratory']; ?></textarea>
+            <textarea id="txt_ef_respiratory" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Respiratorio')"><?php echo $history['tx_pe_respiratory']; ?></textarea>
           </div>
 <!-- {{-- @@@@@@@@@@@@@@@@@@@@@@           CARDIAC         @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}  -->
           <div class="pt_10 col s4 l3">
@@ -185,7 +185,7 @@
             </div>
           </div>
           <div class="col s8 l3 history_container">
-            <textarea id="txt_ef_cardiac" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Cardíaco')"><?php echo $history['physical_exam']['cardiac']; ?></textarea>
+            <textarea id="txt_ef_cardiac" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Cardíaco')"><?php echo $history['tx_pe_cardiac']; ?></textarea>
           </div>
 <!-- {{-- @@@@@@@@@@@@@@@@@@@@@@           ABDOMEN         @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}  -->
           <div class="pt_10 col s12 sanson_title">
@@ -199,12 +199,12 @@
             </div>
             <div id="ef_auscultation_list" class="col s12 list h_100">
 <?php         foreach ($raw_efdatabase['auscultation'] as $key => $value){
-                echo '<div class="item compact truncate" title="'.$value['tx_auscultation_value'].'" onclick="ef_pick_list(\'auscultation\',this.innerHTML)">'.$value['tx_auscultation_value'].'</div>';
+                echo '<div class="item compact" title="'.$value['tx_auscultation_value'].'" onclick="ef_pick_list(\'auscultation\',this.innerHTML)">'.$value['tx_auscultation_value'].'</div>';
               }       ?>
             </div>
           </div>
           <div class="col s8 l2 history_container">
-            <textarea id="txt_ef_auscultation" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Abdomen/Auscultación')"><?php echo $history['physical_exam']['auscultation']; ?></textarea>
+            <textarea id="txt_ef_auscultation" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Abdomen/Auscultación')"><?php echo $history['tx_pe_auscultation']; ?></textarea>
           </div>
 <!--  {{-- @@@@@@@@@@@@@@@@@@@@@@           INSPECTION         @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}  -->
           <div class="pt_10 col s4 l2">
@@ -219,7 +219,7 @@
             </div>
           </div>
           <div class="col s8 l2 history_container">
-            <textarea id="txt_ef_inspection" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Abdomen/Inspección')"><?php echo $history['physical_exam']['inspection']; ?></textarea>
+            <textarea id="txt_ef_inspection" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Abdomen/Inspección')"><?php echo $history['tx_pe_inspection']; ?></textarea>
           </div>
 <!--  {{-- @@@@@@@@@@@@@@@@@@@@@@           PALPATIONS        @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}  -->
           <div class="pt_10 col s4 l2">
@@ -234,7 +234,7 @@
             </div>
           </div>
           <div class="col s8 l2 history_container">
-            <textarea id="txt_ef_palpation" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Abdomen/Palpación')"><?php echo $history['physical_exam']['palpation']; ?></textarea>
+            <textarea id="txt_ef_palpation" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Abdomen/Palpación')"><?php echo $history['tx_pe_palpation']; ?></textarea>
           </div>
 <!--  {{-- @@@@@@@@@@@@@@@@@@@@@@           PELVIS         @@@@@@@@@@@@@@@@@@@@@@@@@@    --}}  -->
           <div class="pt_10 col s4">
@@ -249,7 +249,7 @@
             </div>
           </div>
           <div class="col s8 history_container">
-            <textarea id="txt_ef_hip" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Pelvis')"><?php echo $history['physical_exam']['hip']; ?></textarea>
+            <textarea id="txt_ef_hip" class="bs_1 border_teal" onblur="cls_examination.blur_examination_textarea(this,'Pelvis')"><?php echo $history['tx_pe_hip']; ?></textarea>
           </div>
           <div class="col s12 center-align py_5">
             <a id="paste_pe" class="waves-effect waves-light btn btn-large"><i class="fas fa-paste left"></i>Agregar Ex. Fisico</a>

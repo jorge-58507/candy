@@ -48,10 +48,10 @@ class medicController extends Controller
       [
         [
           "half_page"=>[
-            "line1"=>$request->input('g'),"line2"=>$request->input('h'),"line3"=>$request->input('i'),"bottomline1"=>$request->input('j'),"bottomline2"=>$request->input('k'),"sign_line"=>"1"
+            "line1"=>$request->input('g'),"line2"=>$request->input('h'),"line3"=>$request->input('i'),"bottomline1"=>$request->input('j'),"bottomline2"=>$request->input('k'),"sign_line"=>"1","speciality"=>$request->input('d'),"print_title"=>"localization","localization"=>$request->input('e'),"medic_logo"=>"default_logo.png"
           ],
           "complete_page"=>[
-            "line1"=>$request->input('l'),"line2"=>$request->input('m'),"line3"=>$request->input('n'),"line4"=>$request->input('o'),"bottomline1"=>$request->input('p'),"bottomline2"=>$request->input('q'),"sign_line"=>"1"
+            "line1"=>$request->input('l'),"line2"=>$request->input('m'),"line3"=>$request->input('n'),"line4"=>$request->input('o'),"bottomline1"=>$request->input('p'),"bottomline2"=>$request->input('q'),"sign_line"=>"1","speciality"=>$request->input('d'),"print_title"=>"localization","localization"=>$request->input('e'),"medic_logo"=>"default_logo.png"
           ]
         ]
       ];
@@ -167,14 +167,6 @@ class medicController extends Controller
       $medic_id = $rs_medic[0]['ai_medic_id'];
       return $medic_id;
     }
-    // public function get_medic ($field,$medic_record) {
-    //   $medic = new candy_medic;
-    //   $qry_medic = $medic
-    //   ->WHERE($field,"=",$medic_record)
-    //   ->SELECT('candy_medics.ai_medic_id');
-    //   $rs_medic = $qry_medic->first();
-    //   return $rs_medic['ai_medic_id'];
-    // }
     public function get_medic_logged () {
       $model_medic = new candy_medic;
 

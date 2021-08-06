@@ -14,7 +14,7 @@ class SkinSeeder extends Seeder
     {
         $candy_skin = new candy_skin; 
         $candy_skin->skin_ai_medic_id = 0; 
-        $candy_skin->tx_skin_value = 'Forúnculo '; 
+        $candy_skin->tx_skin_value = 'Forúnculo'; 
         $candy_skin->tx_skin_status = 1; 
         $candy_skin->created_at = time(); 
         $candy_skin->updated_at = time(); 
@@ -24,33 +24,33 @@ $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx
 
 $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Pápula'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
-$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Impétigo '; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
+$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Impétigo'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
 $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Quiste'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
-$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Eczemas '; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
+$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Eczemas'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
 $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Dermatitis'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
-$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Lesión '; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
+$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Lesión'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
 $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Rash cutaneo'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
 $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Psoriasis'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
-$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Liquen '; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
+$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Liquen'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
 $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Prurito'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
 $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Callos'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
-$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Manchas '; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
+$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Manchas'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
-$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Ceborrea '; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
+$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Ceborrea'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
-$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Tiña '; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
+$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Tiña'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
-$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Alopecia '; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
+$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Alopecia'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
 $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Hiperhidrosis'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
@@ -98,7 +98,7 @@ $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx
 
 $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Vitíligo'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
-$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Pitiriasis versicolor '; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
+$candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Pitiriasis versicolor'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 
 $candy_skin = new candy_skin; $candy_skin->skin_ai_medic_id = 0; $candy_skin->tx_skin_value = 'Turgencia disminuida'; $candy_skin->tx_skin_status = 1; $candy_skin->created_at = time(); $candy_skin->updated_at = time(); $candy_skin->save();
 

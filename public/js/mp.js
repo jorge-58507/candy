@@ -154,32 +154,6 @@ class general_funct {
 
   shot_toast(message,opt={}) {
     M.toast({ html: message,opt })
-
-    // var counter = $('#toast_container').find('div').length
-    // var content = `
-    //   <div id="toast_${counter+1}" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    //     <div class="toast-header">
-    //       <strong class="mr-auto">Notification</strong>
-    //       <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-    //         <span aria-hidden="true">&times;</span>
-    //       </button>
-    //     </div>
-    //     <div class="toast-body">
-    //       ${message}
-    //     </div>
-    //   </div>
-    // `
-    // document.getElementById("toast_container").innerHTML += content;     
-    // var option = { "delay": 2000 };
-    // for (const a in opt) {
-    //   option[a] = opt[a];
-    // }    
-    // $('.toast').toast(option);
-
-    // $(`#toast_${counter + 1}`).toast('show');
-    // setTimeout(() => {
-    //   $(`#toast_${counter + 1}`).toast('hide');
-    // }, 6000);
   }
   date_converter(from, to, string) {
     var raw_fecha = string.split('-');
@@ -322,6 +296,23 @@ val_dec(str,decimal,refill,split){
 	}
 	return str;
 }
+print_html(url) {
+  if (!win_children) {
+    var win_children = window.open(url);
+  } else {
+    win_children.close();
+    win_children = window.open(url);
+  }
+}
+ucFirst (s) {
+  if (typeof s !== 'string') return ''
+    s = s.toLowerCase();
+    return s.charAt(0).toUpperCase() + s.slice(1)
+}
+set_focus(field_str) {
+  document.getElementById(field_str).focus();
+}
+
 
 }
 //   #######################     GENERALES

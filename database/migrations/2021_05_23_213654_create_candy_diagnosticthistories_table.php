@@ -13,7 +13,7 @@ class CreateCandyDiagnosticthistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('candy_diagnosticthistories', function (Blueprint $table) {
+        Schema::create('candy_diagnostichistories', function (Blueprint $table) {
             $table->bigIncrements('ai_diagnostichistory_id');
             $table->integer('diagnostichistory_ai_history_id');
             $table->integer('diagnostichistory_ai_diagnostic_id');
@@ -29,6 +29,6 @@ class CreateCandyDiagnosticthistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('candy_diagnosticthistories');
+        Schema::dropIfExists('candy_diagnostichistories');
     }
 }

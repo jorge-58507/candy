@@ -30,7 +30,7 @@ class OrlSeeder extends Seeder
 
     $candy_orl = new candy_orl; $candy_orl->orl_ai_medic_id = 0; $candy_orl->tx_orl_value = 'Caries'; $candy_orl->tx_orl_status = 1; $candy_orl->created_at = time(); $candy_orl->updated_at = time(); $candy_orl->save();
 
-    $candy_orl = new candy_orl; $candy_orl->orl_ai_medic_id = 0; $candy_orl->tx_orl_value = 'Costras melicéricas perinasales '; $candy_orl->tx_orl_status = 1; $candy_orl->created_at = time(); $candy_orl->updated_at = time(); $candy_orl->save();
+    $candy_orl = new candy_orl; $candy_orl->orl_ai_medic_id = 0; $candy_orl->tx_orl_value = 'Costras melicéricas perinasales'; $candy_orl->tx_orl_status = 1; $candy_orl->created_at = time(); $candy_orl->updated_at = time(); $candy_orl->save();
 
     $candy_orl = new candy_orl; $candy_orl->orl_ai_medic_id = 0; $candy_orl->tx_orl_value = 'Dorso nasal deprimido'; $candy_orl->tx_orl_status = 1; $candy_orl->created_at = time(); $candy_orl->updated_at = time(); $candy_orl->save();
 

@@ -10,6 +10,8 @@ use App\candy_date;
 use App\candy_reason;
 use App\candy_history;
 use App\User;
+use App\candy_antecedenthistory;
+use App\candy_reasonhistory;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePatientRequest;
@@ -60,7 +62,6 @@ class dateController extends Controller
       $patient_controller = new patientController;
       $medic_controller = new medicController;
 
-      // $r_date = new recurrent_date; 
       $raw_admin_date = [
         // "next_h"=>trim($r_patient -> cal_num_history($r_user->get_coo_logmedic())),
         "patient_list"=>$patient_controller->get_patient_list(),
@@ -135,14 +136,18 @@ class dateController extends Controller
     public function update(Request $request, $date_slug)
     {
       session_start();
-      $r_history = new historyController;
       $candy_date = new candy_date;
       $candy_reason = new candy_reason;
       $candy_history = new candy_history;
+      $candy_antecedenthistory = new candy_antecedenthistory;
+      $candy_patient = new candy_patient;
+      $candy_reasonhistory = new candy_reasonhistory;
+      $r_medic = new medicController;
 
       $qry_date = $candy_date->where('tx_date_slug','=',$date_slug);
       $rs_date = $qry_date->get();
       if ($qry_date->count() > 0 && $rs_date[0]['tx_date_status'] === 1) {
+
         // ACTUALIZAR CITA, DESACTIVARLA
         $candy_date->where('tx_date_slug','=',$date_slug)->update(['tx_date_status' => 0]);
         $_SESSION['opendate_session'] = $date_slug;
@@ -150,39 +155,11 @@ class dateController extends Controller
         //CONSULTAR EL CONTENIDO DE MOTIVO DE CONSULTA
         $qry_reason = $candy_reason->where('ai_reason_id',$rs_date[0]['date_ai_reason_id']);
         $rs_reason = $qry_reason->get();
-
-        // CONSULTAR ANTECEDENTES ANTERIORES
-        $qry_lastdate = $candy_date->where('date_ai_patient_id',$rs_date[0]['date_ai_patient_id'])->where('tx_date_status',0)->orderBy('ai_date_id','desc')->take(2);
         
-        if ($qry_lastdate->count() > 1) {
-          $rs_lastdate = $qry_lastdate->get();
-          $lastdate_id = $rs_lastdate[1]['ai_date_id'];
-          $rs_history = $candy_history->where('history_ai_date_id', $lastdate_id)->first();
-          $raw_antecedent = json_decode($rs_history['tx_history_antecedent'], true);
-        }else{
-          $raw_antecedent = ["selected" => [], "content" => ''];
-        }
-
-// ***********************  PORQUE NO CORRE LOS ANTECEDENTES
-
-        // crear json history
         $user = $request->user();
         $user_id = $user['id'];
 
-        // $json_history = '{"'.$rs_date[0]['ai_date_id'].'":{"physical_exam":{"skin":null,"head":null,"orl":null,"neck":null,"respiratory":null,"cardiac":null,"auscultation":null,"inspection":null,"palpation":null,"hip":null,"condition":"0","breathing":"0","hydration":"0","fever":"0","pupils":"0"},"history":{"reason":{"selected":['.$rs_date[0]['date_ai_reason_id'].'],"content":"Dolor de Espalda"},"current":{"content":null},"antecedent":{"selected":'.json_encode($raw_antecedent['selected']).',"content":"'.$raw_antecedent['content'].'"},"examination":{"content":null},"diagnostic":{"selected":[],"content":null},"comment":{"content":null},"plan":{"content":null},"vital_sign":{"fc":null,"fr":null,"tas":null,"tad":null,"temp":null,"gc":null}},"laboratory":{"hemoglobin":[null,false],"hematocrit":[null,false],"platelet":[null,false],"redbloodcell":[null,false],"urea":[null,false],"creatinine":[null,false],"whitebloodcell":[null,false],"lymphocytes":[null,false],"neutrophils":[null,false],"monocytes":[null,false],"basophils":[null,false],"eosinophils":[null,false],"result":[null,false]}}}';
-        // $raw_history = json_decode($json_history,true);
-
-        // $json_document = '{"'.$rs_date[0]['ai_date_id'].'":{"medicalorder":{"laboratory":null,"complementary":null},"prescription":{},incapacity":{}';
-        // $raw_document = json_decode($json_document,true);
-
-        // ************CREAR CAMPOS DE DOCUMENT, LABORATORYORDER, COMPLEMENTARYORDER, PRESCRIPTION, ¿RECIPE?
-
         $date_id = $rs_date[0]['ai_date_id'];
-        $candy_history = new candy_history;
-        $candy_reasonhistory = new candy_reasonhistory;
-        $candy_antecedenthistory = new candy_antecedenthistory;
-        $candy_diagnostichistory = new candy_diagnostichistory;
-
         $count_history = $candy_history->where('history_ai_date_id','=',$date_id)->count();
         if ($count_history < 1) {
           $today = date('Y-m-d');
@@ -204,11 +181,8 @@ class dateController extends Controller
           $candy_history->tx_pe_hydration = '';
           $candy_history->tx_pe_fever = '';
           $candy_history->tx_pe_pupils = '';
-          // $candy_history->tx_history_reason = '{"selected":['.$rs_date[0]['date_ai_reason_id'].'],"content":"'.$rs_reason[0]['tx_reason_value'].'"}';
           $candy_history->tx_history_current = '';
-          // $candy_history->tx_history_antecedent = '{"selected":'.json_encode($raw_antecedent['selected']).',"content":"'.$raw_antecedent['content'].'"}';
           $candy_history->tx_history_examination = '';
-          // $candy_history->tx_history_diagnostic = '{"selected":null,"content":""}';
           $candy_history->tx_history_comment = '';
           $candy_history->tx_history_plan = '';
           $candy_history->tx_history_vitalsign = '{"fc":null,"fr":null,"tas":null,"tad":null,"temp":null,"gc":null}';
@@ -229,16 +203,16 @@ class dateController extends Controller
           $candy_history->save();
           $last_historyid = $candy_history->ai_history_id;
 
+          $medic_id = $r_medic->get_medic_id();
           $candy_reasonhistory->reasonhistory_ai_history_id = $last_historyid;
-          $candy_reasonhistory->reasonhistory_ai_reason_id = $rs_date[0]['date_ai_reason_id'];
-          $candy_reasonhistory->tx_reasonhistory_value = $rs_date[0]['tx_reason_value'];
+          $candy_reasonhistory->reasonhistory_ai_reason_id = $rs_reason[0]['ai_reason_id'];
+          $candy_reasonhistory->tx_reasonhistory_value = $rs_reason[0]['tx_reason_value'];
+          $candy_reasonhistory->reasonhistory_ai_medic_id = $medic_id;
           $candy_reasonhistory->save();
 
-
-          // INSERTAR EN ANTECEDENTE TABLA, LIGAR ANTECEDENTES A USUARIO. 
         }
 
-        return response()->json(['response'=>'success','message'=> $lastdate_id]);
+        return response()->json(['response'=>'success']);
       }else{
         return response()->json(['response'=>'failed','message'=>'Esta cita ya fue atendida.']);
       }
